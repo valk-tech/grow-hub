@@ -405,7 +405,7 @@ function reviewScore(e,rv){return avg(items(e).map(it=>clamp((rv.r[it.id]||0)/it
 function perfOf(e,rv){if(!rv)return 0;const w={Critical:3,Must:2,Good:1};let n=0,d=0;e.skills.forEach(s=>{n+=((rv.r[s.id]||0)/TGT[s.g])*w[s.g];d+=w[s.g];});const ts=Object.values(rv.tasks||{});const tsc=ts.length?(ts.filter(t=>t==="done").length*.5+ts.filter(t=>t==="half").length*.35+ts.filter(t=>t==="prog").length*.25)/ts.length:0;return clamp(n/d*.8+tsc*.4,0,1);}
 function potOf(e,rv){if(!rv)return 0;return avg(e.potential.map(p=>rv.r[p.id]||0))/5;}
 function trend(e){const l=lastR(e),p=prevR(e);if(!l||!p)return"new";const gn=avg(items(e).map(it=>it.target-(l.r[it.id]||0)));const gp=avg(items(e).map(it=>it.target-(p.r[it.id]||0)));if(gn<gp-0.04)return"up";if(gn>gp+0.04)return"down";return"flat";}
-function nextFriday(){const d=new Date();const add=(5-d.getDay()+7)%7||7;d.setDate(d.getDate()+add);return d.toISOString().slice(0,10);}
+function nextFriday(){const d=new Date();const add=(5-d.getDay()+7)%7;d.setDate(d.getDate()+add);return isoLocal(d);}
 function stageOf(p){let s=STAGES[0];for(const st of STAGES)if(p>=st[0])s=st;return s[1];}
 
 /* ================= ASCENT VISUAL (3D particle peak) ================= */
@@ -689,7 +689,8 @@ function renderEmp(){
 }
 
 /* ================= JOURNEY MAP ================= */
-function dateOfDay(e,d){const dt=new Date(e.meta.startDate+"T00:00:00");dt.setDate(dt.getDate()+d);return dt.toISOString().slice(0,10);}
+function isoLocal(dt){const p=n=>String(n).padStart(2,"0");return dt.getFullYear()+"-"+p(dt.getMonth()+1)+"-"+p(dt.getDate());}
+function dateOfDay(e,d){const dt=new Date(e.meta.startDate+"T00:00:00");dt.setDate(dt.getDate()+d);return isoLocal(dt);}
 function fmtRu(iso){const m=["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];const d=new Date(iso+"T00:00:00");return d.getDate()+" "+m[d.getMonth()];}
 function roundRectPath(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
 function tplTimeline(e){
@@ -834,8 +835,8 @@ function saveCheckin(){
   const wk=last?last.week+1:0;
   const note=document.getElementById("ci-note").value.trim();
   const tasks={};e.tasks.forEach(t=>tasks[t.id]=t.status);
-  e.reviews.push({week:wk,date:new Date().toISOString().slice(0,10),r:{...ciDraft},tasks,note,lead:ciLead});
-  if(note)e.observations.push({id:"o"+Date.now(),date:new Date().toISOString().slice(0,10),text:note,status:"open",comment:""});
+  e.reviews.push({week:wk,date:isoLocal(new Date()),r:{...ciDraft},tasks,note,lead:ciLead});
+  if(note)e.observations.push({id:"o"+Date.now(),date:isoLocal(new Date()),text:note,status:"open",comment:""});
   save();UI.tab="track";render();toast(`Неделя ${wk} сохранена ✓`);
 }
 
@@ -1125,7 +1126,7 @@ function tplObs(e){
 function setObsStatus(id,v){const o=E().observations.find(o=>o.id===id);if(o){o.status=v;save();render();}}
 function setObsComment(id){const v=document.getElementById("oc-"+id).value.trim();if(!v)return;E().observations.find(o=>o.id===id).comment=v;save();render();}
 function addObs(){const v=document.getElementById("no-text").value.trim();if(!v)return toast("Введите наблюдение");
-  E().observations.push({id:"o"+Date.now(),date:new Date().toISOString().slice(0,10),text:v,status:"open",comment:""});save();render();toast("Наблюдение зафиксировано");}
+  E().observations.push({id:"o"+Date.now(),date:isoLocal(new Date()),text:v,status:"open",comment:""});save();render();toast("Наблюдение зафиксировано");}
 
 /* ================= PROFILE ================= */
 function tplProfile(e){
@@ -1196,14 +1197,14 @@ function importPre(){
   try{
     const data=JSON.parse(document.getElementById("tr-json").value);
     if(!data||typeof data!=="object")throw 0;
-    const e=E();const dt=new Date().toISOString().slice(0,10);
+    const e=E();const dt=isoLocal(new Date());
     e.preAssess={date:dt,ratings:data.ratings||{},strengths:data.strengths||[],risks:data.risks||[],summary:data.summary||""};
     (data.risks||[]).forEach((r,i)=>e.observations.push({id:"opre"+Date.now()+i,date:dt,text:"⚠ Из интервью: "+(r.point||r),status:"open",comment:r.quote?("Цитата: «"+r.quote+"»"):""}));
     (data.strengths||[]).forEach((s2,i)=>e.observations.push({id:"oprs"+Date.now()+i,date:dt,text:"✦ Сильная сторона (интервью): "+(s2.point||s2),status:"confirmed",comment:s2.quote?("Цитата: «"+s2.quote+"»"):""}));
     save();render();toast("Преданализ импортирован: профиль + наблюдения обновлены");
   }catch(err){toast("Не валидный JSON — вставьте ответ Claude целиком");}
 }
-function exportEmp(){const e=E();const blob=new Blob([JSON.stringify(e,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`30-60-90_${e.meta.name}_${new Date().toISOString().slice(0,10)}.json`;a.click();toast("JSON выгружен");}
+function exportEmp(){const e=E();const blob=new Blob([JSON.stringify(e,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`30-60-90_${e.meta.name}_${isoLocal(new Date())}.json`;a.click();toast("JSON выгружен");}
 function clearDemo(){const e=E();if(!confirm("Удалить демо-ревью (кроме baseline) и демо-наблюдения?"))return;
   e.reviews=e.reviews.filter(r=>!r.demo||r.week===0);e.reviews.forEach(r=>delete r.demo);
   e.observations=e.observations.filter(o=>!o.demo);delete e.demo;save();render();toast("Демо очищено");}
@@ -1213,14 +1214,14 @@ function delEmp(){const e=E();if(!confirm(`Удалить ${e.meta.name} и ве
   save();go("home");toast("Удалено");}
 
 /* ================= NEW EMPLOYEE ================= */
-function openModal(){document.getElementById("modal").classList.add("on");document.getElementById("m-start").value=new Date().toISOString().slice(0,10);}
+function openModal(){document.getElementById("modal").classList.add("on");document.getElementById("m-start").value=isoLocal(new Date());}
 function closeModal(){document.getElementById("modal").classList.remove("on");}
 function createEmployee(){
   const name=document.getElementById("m-name").value.trim();
   const role=document.getElementById("m-role").value.trim();
   if(!name||!role)return toast("Заполните имя и роль");
   const mgr=document.getElementById("m-mgr").value.trim()||"—";
-  const start=document.getElementById("m-start").value||new Date().toISOString().slice(0,10);
+  const start=document.getElementById("m-start").value||isoLocal(new Date());
   const skLines=document.getElementById("m-skills").value.split("\n").map(s=>s.trim()).filter(Boolean);
   const skills=skLines.map((l,i)=>{const [n,g]=l.split("|").map(x=>x.trim());const gg=["Critical","Must","Good"].includes(g)?g:"Must";
     return {id:"s"+(i+1),g:gg,name:n||("Skill "+(i+1)),short:(n||"").slice(0,16)};});
@@ -1235,7 +1236,7 @@ function createEmployee(){
 }
 
 /* ================= HUB IO ================= */
-function exportHub(){const blob=new Blob([JSON.stringify(HUB,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`flowlix-grow-hub_${new Date().toISOString().slice(0,10)}.json`;a.click();toast("Бэкап выгружен");}
+function exportHub(){const blob=new Blob([JSON.stringify(HUB,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`flowlix-grow-hub_${isoLocal(new Date())}.json`;a.click();toast("Бэкап выгружен");}
 function importHub(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();
   r.onload=ev=>{try{const data=JSON.parse(ev.target.result);
     if(data.employees){HUB=data;} else if(data.meta&&data.skills){const ex=HUB.employees.findIndex(e=>e.id===data.id);if(ex>=0)HUB.employees[ex]=data;else HUB.employees.push(data);}
