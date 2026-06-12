@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowlix Grow · 30-60-90 Hub</title>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f3f5f4; --card:#ffffff; --ink:#15201a; --ink2:#56635c; --ink3:#94a39b;
+  --line:#e3e8e4; --accent:#0e9f6e; --accent-d:#0b7a55; --accent-soft:#e6f6ef;
+  --violet:#6d5ae6; --violet-soft:#edeafd;
+  --green:#16a34a; --green-soft:#e8f7ee; --red:#dc2626; --red-soft:#fdeaea;
+  --amber:#d97706; --amber-soft:#fdf3e3; --blue:#2563eb; --blue-soft:#e8f0fe;
+  --r:16px; --shadow:0 1px 2px rgba(16,28,22,.05),0 10px 30px -14px rgba(16,28,22,.16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+.wrap{max-width:1240px;margin:0 auto;padding:18px 24px 90px}
+/* topbar */
+.topbar{display:flex;align-items:center;gap:14px;padding:6px 2px 16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;letter-spacing:-.01em;cursor:pointer}
+.logo .lf{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#0e9f6e,#34d399);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px}
+.topbar .sp{flex:1}
+.crumb{color:var(--ink3);font-size:13px}
+.crumb b{color:var(--ink)}
+/* buttons */
+.btn{border:none;border-radius:11px;padding:10px 18px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s;font-family:inherit}
+.btn-p{background:var(--accent);color:#fff;box-shadow:0 6px 16px -6px rgba(14,159,110,.6)}
+.btn-p:hover{background:var(--accent-d)}
+.btn-g{background:var(--card);border:1px solid var(--line);color:var(--ink2)}
+.btn-g:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm{padding:6px 12px;font-size:12.5px;border-radius:9px}
+/* cards */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;box-shadow:var(--shadow);margin-bottom:16px}
+.card h2{font-size:16px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em}
+.card .hint{color:var(--ink3);font-size:12.5px;margin-bottom:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:920px){.grid2{grid-template-columns:1fr}}
+/* ===== dashboard ===== */
+.dash-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin:6px 0 18px;flex-wrap:wrap}
+.dash-head h1{font-size:25px;font-weight:800;letter-spacing:-.02em}
+.dash-head .sub{color:var(--ink2);margin-top:3px}
+.team{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px}
+.ecard{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:.18s;position:relative}
+.ecard:hover{transform:translateY(-3px);box-shadow:0 16px 38px -16px rgba(16,28,22,.3)}
+.ecard .scene{height:148px;position:relative;overflow:hidden}
+.ecard .scene canvas{position:absolute;inset:0;width:100%;height:100%}
+.ecard .daypill{position:absolute;top:12px;left:14px;background:rgba(255,255,255,.85);backdrop-filter:blur(4px);border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;color:#15201a}
+.ecard .statpill{position:absolute;top:12px;right:14px;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;color:#fff}
+.ecard .body{padding:16px 18px 18px}
+.ecard .nm{font-size:16.5px;font-weight:800;letter-spacing:-.01em}
+.ecard .rl{color:var(--ink2);font-size:12.5px;margin-top:1px}
+.ecard .meta{display:flex;gap:14px;margin-top:12px;font-size:12px;color:var(--ink3);flex-wrap:wrap}
+.ecard .meta b{color:var(--ink);font-weight:700}
+.ringwrap{position:absolute;right:16px;bottom:14px}
+.addcard{border:2px dashed var(--line);border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--ink3);cursor:pointer;min-height:240px;transition:.15s;background:transparent}
+.addcard:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.addcard .plus{font-size:34px;line-height:1}
+/* ===== employee hero panel ===== */
+.hero{border-radius:22px;overflow:hidden;position:relative;box-shadow:var(--shadow);margin-bottom:16px;border:1px solid rgba(0,0,0,.04)}
+.hero-inner{display:flex;gap:20px;align-items:stretch;min-height:230px}
+.hero-scene{width:46%;min-width:320px;flex:none;position:relative}
+.hero-scene svg{display:block}
+.hero-info{flex:1;padding:24px 26px 20px;display:flex;flex-direction:column}
+.hero-info .role{font-size:13px;opacity:.8}
+.hero-info h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-top:2px}
+.hero-stats{display:flex;gap:26px;margin-top:14px;flex-wrap:wrap}
+.hstat .v{font-size:21px;font-weight:800;line-height:1.1}
+.hstat .k{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+.hero-bottom{margin-top:auto;padding-top:16px}
+.stagebar{display:flex;align-items:center;gap:10px;font-size:12.5px;opacity:.85}
+.pbar{flex:1;height:9px;border-radius:6px;background:rgba(0,0,0,.10);overflow:hidden}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,#0e9f6e,#34d399);border-radius:6px}
+.stage-name{font-weight:700}
+/* tabs */
+.tabs{display:flex;gap:6px;margin:0 0 16px;flex-wrap:wrap;position:sticky;top:0;z-index:50;background:var(--bg);padding:10px 0}
+.tab{border:1px solid var(--line);background:var(--card);padding:9px 17px;border-radius:99px;cursor:pointer;font-size:13.5px;font-weight:500;color:var(--ink2);transition:.15s;font-family:inherit}
+.tab:hover{border-color:var(--accent);color:var(--accent)}
+.tab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.tab .n{display:inline-block;min-width:18px;text-align:center;background:var(--accent-soft);color:var(--accent);border-radius:99px;font-size:11px;padding:0 5px;margin-left:6px}
+.tab.on .n{background:rgba(255,255,255,.25);color:#fff}
+/* badges */
+.badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:6px}
+.b-crit{background:var(--red-soft);color:var(--red)}
+.b-must{background:var(--amber-soft);color:var(--amber)}
+.b-good{background:var(--blue-soft);color:var(--blue)}
+.b-open{background:var(--amber-soft);color:var(--amber)}
+.b-conf{background:var(--red-soft);color:var(--red)}
+.b-refu{background:var(--green-soft);color:var(--green)}
+.b-act{background:var(--blue-soft);color:var(--blue)}
+/* table */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--ink3);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+/* seg rating */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{border:none;background:#fff;width:34px;height:30px;cursor:pointer;font-size:13px;color:var(--ink3);font-weight:600;border-right:1px solid var(--line);transition:.12s;font-family:inherit}
+.seg button:last-child{border-right:none}
+.seg button:hover{background:var(--accent-soft);color:var(--accent)}
+.seg button.sel{background:var(--accent);color:#fff}
+.delta{font-size:11.5px;font-weight:700;margin-left:8px}
+.d-up{color:var(--green)} .d-dn{color:var(--red)} .d-eq{color:var(--ink3)}
+.ci-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.ci-row:last-child{border-bottom:none}
+.ci-name{flex:1;min-width:0}
+.ci-name .nm{font-weight:600;font-size:13.5px}
+.ci-name .tg{color:var(--ink3);font-size:11.5px}
+.groupbar{display:flex;align-items:center;gap:10px;margin:18px 0 6px}
+.groupbar h3{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2)}
+.groupbar .ln{flex:1;height:1px;background:var(--line)}
+textarea,input[type=text],input[type=date],select{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13.5px;font-family:inherit;background:#fff;color:var(--ink)}
+textarea:focus,input:focus,select:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+/* insight */
+.insight{background:linear-gradient(135deg,#e6f6ef,#eef6ff);border:1px solid #cde9dc;border-radius:var(--r);padding:18px 20px;margin-bottom:16px}
+.insight h2{font-size:15px;margin-bottom:10px}
+.insight ul{margin-left:18px;display:grid;gap:6px;font-size:13.5px}
+.insight .verdict{margin-top:12px;font-size:13.5px;background:rgba(255,255,255,.75);border-radius:10px;padding:10px 14px;border:1px solid #d4eadf}
+.tag-dim{color:var(--ink3);font-size:11px}
+/* ninebox */
+.nb-wrap{display:grid;grid-template-columns:auto 1fr;gap:8px}
+.nb-ylab{writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;font-size:11.5px;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase}
+.ninebox{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:6px;aspect-ratio:1.5;position:relative}
+.nb-cell{border-radius:10px;padding:8px 10px;font-size:11px;color:var(--ink2);border:1px solid var(--line)}
+.nb-cell b{display:block;font-size:11.5px;color:var(--ink)}
+.nb-dot{position:absolute;width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);z-index:5;transform:translate(-50%,50%)}
+.nb-trail{position:absolute;width:9px;height:9px;border-radius:50%;background:#34d399;opacity:.5;z-index:4;transform:translate(-50%,50%)}
+.nb-xlab{grid-column:2;display:flex;justify-content:center;font-size:11.5px;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase}
+.kv{display:grid;gap:8px;font-size:13.5px}
+.kv .row{display:flex;gap:8px}
+.kv .k{color:var(--ink3);min-width:130px;flex:none}
+/* tasks */
+.task{display:grid;grid-template-columns:12px 1fr auto;gap:12px;align-items:center;padding:11px 14px;border:1px solid var(--line);border-radius:12px;margin:8px 0;background:#fff;transition:.13s}
+.task:hover{border-color:#c9d4cd;box-shadow:0 3px 12px -7px rgba(16,28,22,.28)}
+.task .sdot{width:10px;height:10px;border-radius:50%;flex:none}
+.ph{font-size:10.5px;font-weight:800;color:#fff;border-radius:7px;padding:3px 8px;flex:none}
+.ph30{background:#0e9f6e}.ph60{background:#0891b2}.ph90{background:#6d5ae6}
+.task .tt{min-width:0}
+.task .tt .nm{font-weight:600;font-size:13.5px;line-height:1.45}
+.task .tt .meta{font-size:11.5px;color:var(--ink3);margin-top:2px}
+.task .right{display:flex;align-items:center;gap:6px}
+.iconb{width:26px;height:26px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink3);cursor:pointer;font-size:14px;line-height:1;opacity:0;transition:.13s;flex:none}
+.task:hover .iconb{opacity:1}
+.iconb:hover{color:var(--accent);border-color:var(--accent)}
+@media(hover:none){.iconb{opacity:1}}
+.task.macro{border-left:3px solid var(--violet)}
+.tstat{border-radius:8px;border:1px solid var(--line);padding:5px 9px;font-size:12px;background:#fff;cursor:pointer;font-family:inherit}
+.task .tstat{width:124px;font-size:11.5px;padding:4px 7px;flex:none}
+.st-done{background:var(--green-soft);color:var(--green);border-color:#bfe8cd;font-weight:600}
+.st-prog{background:var(--blue-soft);color:var(--blue);border-color:#c3d8fb;font-weight:600}
+.st-block{background:var(--red-soft);color:var(--red);border-color:#f6c8c8;font-weight:600}
+.st-todo{color:var(--ink2)}
+.task.done{opacity:.6}
+.task.done .nm{text-decoration:line-through;color:var(--ink3);font-weight:500}
+/* obs */
+.obs{padding:13px 0;border-bottom:1px dashed var(--line)}
+.obs:last-child{border-bottom:none}
+.obs .head{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.obs .dt{color:var(--ink3);font-size:12px}
+.obs .txt{margin-top:5px;font-size:13.5px}
+.obs .cmt{margin-top:6px;background:var(--bg);border-radius:9px;padding:8px 12px;font-size:12.5px;color:var(--ink2)}
+.obs .cmt b{color:var(--ink)}
+.muted{color:var(--ink3)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.savebar{position:sticky;bottom:14px;display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#15201a;color:#fff;padding:11px 22px;border-radius:12px;font-size:13.5px;box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:.25s;z-index:99}
+.toast.show{opacity:1}
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(13,20,16,.45);backdrop-filter:blur(3px);z-index:90;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto}
+.modal-bg.on{display:flex}
+.modal{background:#fff;border-radius:20px;max-width:680px;width:100%;padding:26px 28px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.modal h2{font-size:18px;margin-bottom:4px}
+.fld{margin-top:14px}
+.fld label{display:block;font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.frow{display:flex;gap:12px}
+.frow .fld{flex:1}
+.lead-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
+.lead-btn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 13px;text-align:left;cursor:pointer;font-family:inherit;display:grid;gap:3px;transition:.12s}
+.lead-btn b{font-size:12.5px}
+.lead-btn span{font-size:11.5px;color:var(--ink3)}
+.lead-btn:hover{border-color:var(--accent)}
+.lead-btn.sel{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent)}
+.nbc-r{background:#fdeaea;border-color:#f3caca}
+.nbc-y{background:#fdf3e3;border-color:#f0ddb6}
+.nbc-g{background:#e8f7ee;border-color:#c4e8d2}
+.fbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.fchip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:5px 12px;font-size:12px;color:var(--ink2);cursor:pointer;font-family:inherit}
+.fchip span{background:var(--bg);border-radius:99px;padding:0 6px;font-size:11px;margin-left:5px}
+.fchip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.fchip.on span{background:rgba(255,255,255,.22)}
+.phase-sec{margin-bottom:4px}
+.phase-head{display:flex;align-items:center;gap:10px;padding:11px 0 7px;cursor:pointer;border-bottom:1px solid var(--line)}
+.phase-head:hover .tag-dim{color:var(--accent)}
+.pmini{flex:0 0 150px;height:6px;border-radius:4px;background:var(--bg);overflow:hidden}
+.pmini i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.tchild{margin-left:36px;padding:8px 12px}
+.tchild .nm{font-weight:500;font-size:13px}
+.st-half{background:var(--amber-soft);color:var(--amber);border-color:#f0ddb6;font-weight:600}
+.view{display:none}.view.on{display:block}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--ink2);flex-wrap:wrap;margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}
+/* timeline */
+.tl-svg{width:100%;display:block}
+.tip{position:fixed;background:#15201a;color:#fff;font-size:12px;border-radius:8px;padding:6px 10px;pointer-events:none;z-index:95;opacity:0;transition:.1s;max-width:280px}
+.hero-dark{color:#f1f6f2}
+.hero-dark .role,.hero-dark .stagebar{opacity:.88}
+.hero-dark .pbar{background:rgba(255,255,255,.16)}
+</style>
+<script>
+window.FLOWLIX_CONFIG = {
+  SUPABASE_URL: "https://vtfwedcxybznqpysitvz.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_jsk1FYRsZF9ued8GCZPA_A_-Co1BjS5"
+};
+</script>
+</head>
+<body>
+<div id="auth-gate" style="display:none;position:fixed;inset:0;z-index:200;background:linear-gradient(140deg,#0b1026,#15224d 55%,#1d3f7a);align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:22px;padding:40px 44px;max-width:380px;width:92%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.4)">
+    <div style="width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,#0e9f6e,#34d399);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px">🌱</div>
+    <div style="font-size:20px;font-weight:800;letter-spacing:-.01em">Flowlix Grow</div>
+    <div style="color:#56635c;font-size:13px;margin:6px 0 22px">30·60·90 Hub — онбординг команды</div>
+    <button class="btn btn-p" style="width:100%;padding:12px" onclick="signIn()">Войти через Google</button>
+    <div id="auth-err" style="color:#dc2626;font-size:12.5px;margin-top:12px"></div>
+    <div style="color:#94a39b;font-size:11.5px;margin-top:16px">Доступ только для аккаунтов @flowlix.eu</div>
+  </div>
+</div>
+<div class="wrap" id="app-root" style="display:none">
+  <div class="topbar">
+    <div class="logo" onclick="go('home')"><span class="lf">🌱</span>Flowlix Grow <span class="muted" style="font-weight:500;font-size:13px">· 30·60·90 Hub</span></div>
+    <div class="sp"></div>
+    <span class="crumb" id="crumb"></span>
+    <span id="who" class="crumb" style="display:none"></span>
+    <button id="signout" class="btn btn-g btn-sm" style="display:none" onclick="signOutApp()">Выйти</button>
+    <button class="btn btn-g btn-sm" onclick="exportHub()">⬇︎ Бэкап</button>
+    <label class="btn btn-g btn-sm" style="cursor:pointer">⬆︎ Импорт<input type="file" accept=".json" style="display:none" onchange="importHub(this)"></label>
+  </div>
+
+  <!-- HOME -->
+  <div class="view" id="v-home">
+    <div class="dash-head">
+      <div>
+        <h1>Команда на онбординге</h1>
+        <div class="sub" id="dash-sub"></div>
+      </div>
+      <button class="btn btn-p" onclick="openModal()">+ Новый сотрудник</button>
+    </div>
+    <div class="team" id="team"></div>
+  </div>
+
+  <!-- EMPLOYEE -->
+  <div class="view" id="v-emp">
+    <div class="hero" id="hero"></div>
+    <div class="tabs" id="tabs"></div>
+    <div id="tabbody"></div>
+  </div>
+</div>
+
+<!-- modal: new employee -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h2>Новый сотрудник</h2>
+    <div class="hint" style="color:var(--ink3);font-size:12.5px">План создаётся из скиллсета роли. Можно вставить из Excel-выгрузки (по строке на скилл).</div>
+    <div class="frow">
+      <div class="fld"><label>Имя</label><input type="text" id="m-name" placeholder="Имя кандидата"></div>
+      <div class="fld"><label>Роль</label><input type="text" id="m-role" placeholder="Напр. Finance Ops Lead"></div>
+    </div>
+    <div class="frow">
+      <div class="fld"><label>Менеджер</label><input type="text" id="m-mgr" placeholder="Кому репортит"></div>
+      <div class="fld"><label>Дата старта</label><input type="date" id="m-start"></div>
+    </div>
+    <div class="fld"><label>Скиллы роли — по одному в строке: Название | Critical/Must/Good</label>
+      <textarea id="m-skills" rows="6" placeholder="Fintech architecture domain depth | Critical&#10;Product mindset | Critical&#10;Spec writing | Must&#10;UK market context | Good"></textarea></div>
+    <div class="fld"><label>Первые задачи — Фаза(30/60/90) | Задача</label>
+      <textarea id="m-tasks" rows="4" placeholder="30 | Data Matrix: все entities и Source of Truth&#10;60 | First Unification Proposal"></textarea></div>
+    <div class="savebar" style="position:static">
+      <button class="btn btn-g" onclick="closeModal()">Отмена</button>
+      <button class="btn btn-p" onclick="createEmployee()">Создать план →</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="tip" id="tip"></div>
+
+<script>
+/* ================= CONSTANTS ================= */
+const TGT={Critical:5,Must:4,Good:3};
+const STATUSES={todo:["st-todo","К работе"],prog:["st-prog","В работе"],half:["st-half","Недоделано"],done:["st-done","Готово"],block:["st-block","Блок"]};
+const OBS_ST={open:["b-open","Open"],confirmed:["b-conf","Confirmed"],refuted:["b-refu","Refuted"],action:["b-act","Action taken"]};
+const ATT_DEF=[["a1","Вовлечённость / энергия"],["a2","Ownership — не ждёт инструкций"],["a3","Открытость к фидбеку"],["a4","Надёжность — сроки и договорённости"]];
+const POT_DEF=[["p1","Скорость обучения / погружения"],["p2","Discovery: предлагает первые шаги сам"],["p3","Качество вопросов — cutting"]];
+const STAGES=[[0,"Старт ✦"],[0.15,"Погружение"],[0.35,"Day 30 позади"],[0.6,"Экватор пройден"],[0.85,"Финальный отрезок"],[1,"План закрыт ✦"]];
+const LS="flowlix-grow-hub-v2";
+
+/* ================= DEMO DATA ================= */
+function pavel(){
+  const sk=[["s1","Critical","Fintech architecture domain depth","Fintech arch"],["s2","Critical","Product mindset поверх financial ops","Product mindset"],
+   ["s3","Critical","System thinking & integration design","System thinking"],["s4","Critical","Stakeholder management (founder-triangle)","Stakeholders"],
+   ["s5","Must","Discovery velocity в ambiguous context","Discovery"],["s6","Must","Requirements engineering / spec writing","Specs"],
+   ["s7","Must","Data literacy без coding","Data literacy"],["s8","Must","EMI / payments regulatory awareness","Reg awareness"],
+   ["s9","Good","Visual / diagrammatic deliverables","Visual"],["s10","Good","UK fintech market context (FCA, EMI/API)","UK context"]];
+  const mk=(w,date,note,vals,tasks)=>({week:w,date,note,demo:true,r:vals,tasks});
+  return {
+    id:"e-pavel", demo:true,
+    meta:{name:"Павел",role:"EMI Platform Product Manager",manager:"Костя (Founder)",startDate:"2026-05-18",days:90},
+    skills:sk.map(([id,g,name,short])=>({id,g,name,short})),
+    attitude:ATT_DEF.map(([id,name])=>({id,name})),
+    potential:POT_DEF.map(([id,name])=>({id,name})),
+    tasks:[
+      {id:"t1",phase:30,title:"Data Matrix: entities, SoT, принципы расчёта",status:"done"},
+      {id:"t2",phase:30,title:"Client money flow diagram end-to-end",status:"done"},
+      {id:"t3",phase:30,title:"Internal money flow + control points CFO + зоны риска",status:"half"},
+      {id:"t4",phase:30,kind:"macro",title:"Карта transaction flow через все системы",status:"prog"},
+      {id:"t4a",phase:30,parentId:"t4",title:"Разобрать flow Cleflow (текущий процессинг)",status:"done"},
+      {id:"t4b",phase:30,parentId:"t4",title:"Свести white-label слои в одну схему",status:"prog"},
+      {id:"t4c",phase:30,parentId:"t4",title:"Стыковка с future core banking — гипотезы",status:"todo"},
+      {id:"t5",phase:60,kind:"macro",title:"First Unification Proposal — platform feature spec",status:"todo"},
+      {id:"t6",phase:60,title:"Cadences: 1:1 founder, roadmap sync CTO",status:"done"},
+      {id:"t7",phase:90,title:"Product roadmap — ратификация founder triangle",status:"todo"}],
+    reviews:[
+      mk(0,"2026-05-18","Baseline по итогам pre-final встречи.",{s1:4,s2:4,s3:4,s4:3,s5:4,s6:4,s7:4,s8:3,s9:4,s10:2,a1:4,a2:4,a3:4,a4:4,p1:4,p2:4,p3:4},{t1:"todo",t2:"todo",t3:"todo",t4:"todo",t5:"todo",t6:"todo",t7:"todo"}),
+      mk(1,"2026-05-22","Сам запросил доступы, начал data matrix без пинка.",{s1:4,s2:4,s3:4,s4:3,s5:5,s6:4,s7:4,s8:3,s9:4,s10:2,a1:5,a2:4,a3:4,a4:4,p1:5,p2:4,p3:4},{t1:"prog",t2:"todo",t3:"todo",t4:"todo",t5:"todo",t6:"prog",t7:"todo"}),
+      mk(2,"2026-05-29","Первый драфт client money flow — visual-first. С CTO пока осторожен.",{s1:4,s2:5,s3:4,s4:3,s5:5,s6:4,s7:4,s8:3,s9:5,s10:3,a1:5,a2:5,a3:4,a4:4,p1:5,p2:5,p3:4},{t1:"prog",t2:"prog",t3:"todo",t4:"todo",t5:"todo",t6:"done",t7:"todo"}),
+      mk(3,"2026-06-05","Data matrix закрыта, качество выше ожиданий. На sync с CTO впервые повёл дискуссию.",{s1:4,s2:5,s3:5,s4:4,s5:5,s6:4,s7:4,s8:3,s9:5,s10:3,a1:5,a2:5,a3:5,a4:4,p1:5,p2:5,p3:5},{t1:"done",t2:"prog",t3:"prog",t4:"todo",t5:"todo",t6:"done",t7:"todo"})],
+    observations:[
+      {id:"o1",date:"2026-05-22",text:"Сам запросил доступы в первый день — не ждал чеклиста.",status:"confirmed",comment:"Подтверждает discovery velocity. Учтено в W1.",demo:true},
+      {id:"o2",date:"2026-05-29",text:"На sync с CTO слушающая позиция — осторожность или паттерн?",status:"refuted",comment:"W3: повёл дискуссию по coupling tradeoffs. Осторожность первых недель.",demo:true},
+      {id:"o3",date:"2026-06-05",text:"Reg awareness не растёт — в дизайн-обсуждениях не упоминает constraints сам.",status:"open",comment:"",demo:true}]
+  };
+}
+function alina(){
+  const sk=[["s1","Critical","Reconciliation & settlement operations","Reconciliation"],["s2","Critical","Safeguarding awareness","Safeguarding"],
+   ["s3","Critical","Точность и rigor в data ops","Data rigor"],["s4","Must","Scheme reporting (Visa / MC)","Scheme reporting"],
+   ["s5","Must","Коммуникация с банками-партнёрами","Bank comms"],["s6","Must","Документирование процессов","Process docs"],
+   ["s7","Good","SQL basics","SQL"],["s8","Good","Automation mindset","Automation"]];
+  const base={s1:3,s2:3,s3:4,s4:3,s5:3,s6:3,s7:2,s8:3,a1:4,a2:3,a3:5,a4:4,p1:4,p2:3,p3:3};
+  const steps=[{},{s1:4,p2:4},{s2:4,a2:4},{s4:4,s6:4},{s5:4,p3:4},{s7:3},{s3:5,a1:5},{s8:4,p1:5}];
+  let cur={...base}; const dates=["2026-04-20","2026-04-24","2026-05-01","2026-05-08","2026-05-15","2026-05-22","2026-05-29","2026-06-05"];
+  const notes=["Baseline на входе.","Быстро разобралась в settlement-цикле Cleflow.","Закрыла первый рекон самостоятельно.","Scheme-отчёт сдан без правок.","Выстроила контакт с банком напрямую.","SQL идёт медленно — наставник подключён.","Предложила чек-лист процесса — приняли.","Сама автоматизировала сверку в полдня."];
+  const reviews=steps.map((d,i)=>{cur={...cur,...d};return {week:i,date:dates[i],note:notes[i],demo:true,r:{...cur},tasks:{}};});
+  return {
+    id:"e-alina", demo:true,
+    meta:{name:"Алина",role:"Finance Ops Specialist",manager:"Лера",startDate:"2026-04-20",days:90},
+    skills:sk.map(([id,g,name,short])=>({id,g,name,short})),
+    attitude:ATT_DEF.map(([id,name])=>({id,name})),
+    potential:POT_DEF.map(([id,name])=>({id,name})),
+    tasks:[
+      {id:"t1",phase:30,title:"Освоить settlement-цикл и текущие реконы",status:"done"},
+      {id:"t2",phase:30,title:"Первый самостоятельный рекон с МПС",status:"done"},
+      {id:"t3",phase:60,title:"Scheme reporting без ревью",status:"done"},
+      {id:"t4",phase:60,title:"Чек-лист / документация процесса сверки",status:"done"},
+      {id:"t5",phase:90,title:"Автоматизация одного ручного рекона",status:"prog"},
+      {id:"t6",phase:90,title:"SQL: самостоятельные выборки для сверки",status:"prog"}],
+    reviews,
+    observations:[
+      {id:"o1",date:"2026-05-22",text:"SQL буксует — возможно, барьер уверенности, не способностей.",status:"action",comment:"Подключили наставника (2 сессии/нед). Прогресс к W7.",demo:true},
+      {id:"o2",date:"2026-06-05",text:"Сама предложила и сделала автоматизацию сверки — сигнал потенциала выше роли.",status:"open",comment:"",demo:true}]
+  };
+}
+const DEFAULT_HUB={employees:[pavel(),alina()]};
+
+/* ================= STATE ================= */
+let HUB={employees:[]};
+let UI={view:"home",emp:null,tab:"timeline"};
+let ciDraft={};
+const CLOUD=()=>!!(window.FLOWLIX_CONFIG&&window.FLOWLIX_CONFIG.SUPABASE_URL&&window.sb);
+function loadLocal(){try{const s=localStorage.getItem(LS);if(s)return JSON.parse(s);}catch(e){}return JSON.parse(JSON.stringify(DEFAULT_HUB));}
+async function loadHub(){
+  const {data,error}=await window.sb.from("employees").select("id,data").order("created_at");
+  if(error){toast("Ошибка загрузки: "+error.message);return;}
+  if(!data.length){
+    const demos=DEFAULT_HUB.employees;
+    await window.sb.from("employees").upsert(demos.map(e=>({id:e.id,data:e})));
+    HUB={employees:JSON.parse(JSON.stringify(demos))};
+  }else HUB={employees:data.map(r=>r.data)};
+}
+let saveTimer=null;
+function save(){
+  if(!CLOUD()){localStorage.setItem(LS,JSON.stringify(HUB));return;}
+  clearTimeout(saveTimer);saveTimer=setTimeout(flushCloud,350);
+}
+async function flushCloud(){
+  try{
+    const rows=HUB.employees.map(e=>({id:e.id,data:e}));
+    const {error}=await window.sb.from("employees").upsert(rows);
+    if(error)toast("⚠ Не сохранилось: "+error.message);
+  }catch(err){toast("⚠ Нет связи с базой — изменения не сохранены");}
+}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2300);}
+const E=()=>HUB.employees.find(e=>e.id===UI.emp);
+
+/* ================= HELPERS ================= */
+function avg(a){return a.length?a.reduce((x,y)=>x+y,0)/a.length:0;}
+function lerp(a,b,t){return a+(b-a)*t;}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function fmtD(v){const x=v.toFixed(0);return (v>0?"+":"")+x;}
+function dayNum(e){const s=new Date(e.meta.startDate+"T00:00:00");return clamp(Math.floor((Date.now()-s.getTime())/864e5),0,e.meta.days);}
+function progress(e){return dayNum(e)/e.meta.days;}
+function items(e){return [...e.skills.map(s=>({...s,kind:"skill",target:TGT[s.g]})),...e.attitude.map(a=>({...a,kind:"attitude",target:5,g:"Attitude"})),...e.potential.map(p=>({...p,kind:"potential",target:5,g:"Potential"}))];}
+function lastR(e){return e.reviews.length?e.reviews[e.reviews.length-1]:null;}
+function prevR(e){return e.reviews.length>1?e.reviews[e.reviews.length-2]:null;}
+function healthOf(e){const r=lastR(e);if(!r)return .7;const ratios=items(e).map(it=>clamp((r.r[it.id]||0)/it.target,0,1.15));return clamp(avg(ratios),0,1);}
+function reviewScore(e,rv){return avg(items(e).map(it=>clamp((rv.r[it.id]||0)/it.target,0,1.2)));}
+function perfOf(e,rv){if(!rv)return 0;const w={Critical:3,Must:2,Good:1};let n=0,d=0;e.skills.forEach(s=>{n+=((rv.r[s.id]||0)/TGT[s.g])*w[s.g];d+=w[s.g];});const ts=Object.values(rv.tasks||{});const tsc=ts.length?(ts.filter(t=>t==="done").length*.5+ts.filter(t=>t==="half").length*.35+ts.filter(t=>t==="prog").length*.25)/ts.length:0;return clamp(n/d*.8+tsc*.4,0,1);}
+function potOf(e,rv){if(!rv)return 0;return avg(e.potential.map(p=>rv.r[p.id]||0))/5;}
+function trend(e){const l=lastR(e),p=prevR(e);if(!l||!p)return"new";const gn=avg(items(e).map(it=>it.target-(l.r[it.id]||0)));const gp=avg(items(e).map(it=>it.target-(p.r[it.id]||0)));if(gn<gp-0.04)return"up";if(gn>gp+0.04)return"down";return"flat";}
+function nextFriday(){const d=new Date();const add=(5-d.getDay()+7)%7||7;d.setDate(d.getDate()+add);return d.toISOString().slice(0,10);}
+function stageOf(p){let s=STAGES[0];for(const st of STAGES)if(p>=st[0])s=st;return s[1];}
+
+/* ================= ASCENT VISUAL (3D particle peak) ================= */
+let SCENES=[];
+function destroyScenes(){SCENES.forEach(s=>{if(s.raf)cancelAnimationFrame(s.raf);if(s.renderer){try{s.renderer.dispose();s.renderer.forceContextLoss&&s.renderer.forceContextLoss();}catch(e){}}});SCENES=[];}
+function auraHex(h){
+  if(h>=0.85)return["#34d399","#a7f3d0"];
+  if(h>=0.7)return["#a3e635","#ecfccb"];
+  if(h>=0.55)return["#fbbf24","#fef3c7"];
+  return["#f87171","#fecaca"];
+}
+function phaseBgCss(p){
+  if(p<1/3)return"linear-gradient(140deg,#0b1026,#15224d 55%,#1d3f7a)";
+  if(p<2/3)return"linear-gradient(140deg,#06181d,#0d3340 55%,#13525e)";
+  return"linear-gradient(140deg,#170f04,#33250b 55%,#67500f)";
+}
+/* ================= MAGIC EMBLEM (ромб + лого Flowlix) ================= */
+const MAGIC=["#22d3ee","#a78bfa","#f472b6","#34d399"];
+function hex2rgb(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
+function mixCol(c1,c2,t){const a=hex2rgb(c1),b=hex2rgb(c2);
+  return "rgb("+Math.round(a[0]+(b[0]-a[0])*t)+","+Math.round(a[1]+(b[1]-a[1])*t)+","+Math.round(a[2]+(b[2]-a[2])*t)+")";}
+function magicCol(T,off){const x=((T*0.22+off)%1+1)%1*MAGIC.length;const i=Math.floor(x)%MAGIC.length;
+  return mixCol(MAGIC[i],MAGIC[(i+1)%MAGIC.length],x-i);}
+function rhombPath(ctx,cx,cy,r,th){
+  ctx.beginPath();
+  for(let i=0;i<4;i++){const a=th+i*Math.PI/2;const x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+  ctx.closePath();
+}
+function rhombPt(cx,cy,r,th,s){
+  s=((s%1)+1)%1;
+  const i=Math.floor(s*4)%4,t=s*4-i;
+  const a1=th+i*Math.PI/2,a2=th+(i+1)*Math.PI/2;
+  const x1=cx+Math.cos(a1)*r,y1=cy+Math.sin(a1)*r,x2=cx+Math.cos(a2)*r,y2=cy+Math.sin(a2)*r;
+  return {x:x1+(x2-x1)*t,y:y1+(y2-y1)*t};
+}
+function mkEmblemState(W,H,detail){
+  const E={x:W*0.5,y:H*0.52},R=H*(detail?0.30:0.32);
+  const parts=[];const Np=detail?26:14;
+  for(let i=0;i<Np;i++)
+    parts.push({rad:R*(0.9+Math.random()*1.05),ang0:Math.random()*6.283,spd:(Math.random()<0.5?-1:1)*(0.10+Math.random()*0.18),seed:Math.random()*6.28,off:Math.random(),sz:1+Math.random()*1.6});
+  return {E,R,parts};
+}
+function drawEcgW(ctx,x0,w,fs,T){
+  const pts=[[0,0],[0.07,0],[0.12,-0.10],[0.16,0.06],[0.27,0.60],[0.39,-0.38],[0.49,0.08],[0.59,0.60],[0.71,-0.62],[0.77,-0.30],[0.85,0.03],[0.93,-0.05],[1,0]];
+  const ys=fs*0.52;
+  const P=pts.map(a=>({x:x0+a[0]*w,y:a[1]*ys}));
+  const cl=[0];for(let i=1;i<P.length;i++)cl.push(cl[i-1]+Math.hypot(P[i].x-P[i-1].x,P[i].y-P[i-1].y));
+  const L=cl[cl.length-1];
+  const ptAt=s=>{s=clamp(s,0,L);
+    for(let i=1;i<cl.length;i++){if(s<=cl[i]){const t=(s-cl[i-1])/((cl[i]-cl[i-1])||1);
+      return {x:P[i-1].x+(P[i].x-P[i-1].x)*t,y:P[i-1].y+(P[i].y-P[i-1].y)*t};}}
+    return P[P.length-1];};
+  const beat=Math.pow(Math.max(0,Math.sin(T*3.0)),6)+0.5*Math.pow(Math.max(0,Math.sin(T*3.0-0.45)),8);
+  ctx.save();
+  ctx.lineJoin="round";ctx.lineCap="round";
+  ctx.strokeStyle=magicCol(T,0.1);
+  ctx.lineWidth=fs*0.085*(1+beat*0.3);
+  ctx.shadowColor=magicCol(T,0.1);ctx.shadowBlur=10+beat*18;
+  ctx.beginPath();P.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.stroke();
+  const cyc=(T*0.5)%1.35;
+  if(cyc<=1.02){
+    const head=cyc*L,tail=Math.max(0,head-L*0.20);
+    ctx.strokeStyle="#ffffff";ctx.lineWidth=fs*0.10;ctx.shadowColor="#d6fff0";ctx.shadowBlur=20;
+    ctx.globalAlpha=0.95;
+    ctx.beginPath();
+    for(let k=0;k<=18;k++){const q=ptAt(tail+(head-tail)*k/18);k?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y);}
+    ctx.stroke();
+    const hq=ptAt(head);
+    const hg=ctx.createRadialGradient(hq.x,hq.y,0,hq.x,hq.y,fs*0.24);
+    hg.addColorStop(0,"#ffffff");hg.addColorStop(0.4,magicCol(T,0.15));hg.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=hg;ctx.beginPath();ctx.arc(hq.x,hq.y,fs*0.24,0,6.283);ctx.fill();
+  }
+  ctx.restore();ctx.globalAlpha=1;
+}
+function drawEmblem(ctx,W,H,S,o,T,px,py){
+  ctx.clearRect(0,0,W,H);
+  const E={x:S.E.x-px*12,y:S.E.y-py*8},R=S.R;
+  const thMain=T*0.45;
+  /* breathing aura */
+  ctx.save();ctx.globalCompositeOperation="lighter";
+  const br=R*(2.1+0.12*Math.sin(T*1.1));
+  const ag=ctx.createRadialGradient(E.x,E.y,0,E.x,E.y,br);
+  const c0=magicCol(T,0);
+  ag.addColorStop(0,c0.replace("rgb","rgba").replace(")",",0.16)"));
+  ag.addColorStop(0.55,c0.replace("rgb","rgba").replace(")",",0.05)"));
+  ag.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.fillStyle=ag;ctx.beginPath();ctx.arc(E.x,E.y,br,0,6.283);ctx.fill();
+  /* парящие точки: загораются и гаснут */
+  S.parts.forEach(pp=>{
+    const a=pp.ang0+T*pp.spd*0.45;
+    const x=E.x+Math.cos(a)*pp.rad,y=E.y+Math.sin(a)*pp.rad*0.82+Math.sin(T*0.7+pp.seed)*4;
+    const vis=Math.pow(Math.max(0,Math.sin(T*0.55+pp.seed*2.7)),1.7);
+    if(vis<0.03)return;
+    ctx.globalAlpha=vis*0.9;
+    const pc=magicCol(T,pp.off);
+    const pg=ctx.createRadialGradient(x,y,0,x,y,pp.sz*3);
+    pg.addColorStop(0,"#ffffff");pg.addColorStop(0.35,pc);pg.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=pg;ctx.beginPath();ctx.arc(x,y,pp.sz*3,0,6.283);ctx.fill();
+  });
+  ctx.globalAlpha=1;
+  /* back rhombus */
+  ctx.strokeStyle=magicCol(T,0.35);ctx.lineWidth=1;ctx.globalAlpha=0.3;
+  rhombPath(ctx,E.x,E.y,R*1.28,thMain*0.55+0.5);ctx.stroke();
+  ctx.globalAlpha=1;
+  /* glass fill */
+  rhombPath(ctx,E.x,E.y,R,thMain);
+  const gf=ctx.createRadialGradient(E.x,E.y,0,E.x,E.y,R);
+  gf.addColorStop(0,"rgba(255,255,255,.07)");gf.addColorStop(1,"rgba(255,255,255,.015)");
+  ctx.fillStyle=gf;ctx.fill();
+  /* main rhombus */
+  const lg=ctx.createLinearGradient(E.x-R,E.y-R,E.x+R,E.y+R);
+  lg.addColorStop(0,magicCol(T,0));lg.addColorStop(1,magicCol(T,0.5));
+  ctx.strokeStyle=lg;ctx.lineWidth=2.2;ctx.shadowColor=magicCol(T,0.25);ctx.shadowBlur=16;
+  rhombPath(ctx,E.x,E.y,R,thMain);ctx.stroke();
+  ctx.globalAlpha=0.4;ctx.lineWidth=1;
+  rhombPath(ctx,E.x,E.y,R*1.09,thMain);ctx.stroke();
+  ctx.shadowBlur=0;ctx.globalAlpha=1;
+  /* edge traveler + trail */
+  for(let k=8;k>=0;k--){
+    const pt=rhombPt(E.x,E.y,R,thMain,T*0.20-k*0.011);
+    ctx.globalAlpha=k===0?1:0.4*(1-k/9);
+    const tc=magicCol(T,0.12);
+    const tg=ctx.createRadialGradient(pt.x,pt.y,0,pt.x,pt.y,k===0?7:4);
+    tg.addColorStop(0,"#ffffff");tg.addColorStop(0.4,tc);tg.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=tg;ctx.beginPath();ctx.arc(pt.x,pt.y,k===0?7:4,0,6.283);ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  ctx.restore();ctx.globalAlpha=1;
+  /* logo: статичное «flowlix», W — пульсирующая кардиограмма */
+  ctx.save();ctx.translate(E.x,E.y);
+  const fs=R*0.44;
+  const fL="200 "+fs.toFixed(1)+"px 'Avenir Next','Futura','Helvetica Neue','Segoe UI',Arial,sans-serif";
+  ctx.textBaseline="middle";ctx.textAlign="left";
+  try{ctx.letterSpacing=(fs*0.13).toFixed(1)+"px";}catch(err){}
+  ctx.font=fL;
+  const w1=ctx.measureText("flo").width,w3=ctx.measureText("lix").width;
+  const wW=fs*1.55,gap=fs*0.15;
+  const tot=w1+wW+w3+gap*2;
+  const x=-tot/2;
+  ctx.shadowColor=magicCol(T,0.1);ctx.shadowBlur=9;
+  ctx.fillStyle="#eafcff";ctx.fillText("flo",x,fs*0.03);
+  ctx.fillText("lix",x+w1+gap+wW+gap,fs*0.03);
+  ctx.shadowBlur=0;
+  try{ctx.letterSpacing="0px";}catch(err){}
+  drawEcgW(ctx,x+w1+gap,wW,fs,T);
+  ctx.restore();ctx.globalAlpha=1;
+  /* label */
+  if(o.label){
+    ctx.font="700 10.5px -apple-system,'Segoe UI',Arial";ctx.textBaseline="alphabetic";
+    const tw2=ctx.measureText(o.label).width+16;
+    roundRectPath(ctx,W-tw2-12,12,tw2,19,9.5);ctx.fillStyle="rgba(255,255,255,.92)";ctx.fill();
+    ctx.fillStyle="#0c1228";ctx.textAlign="center";ctx.fillText(o.label,W-tw2/2-12,25.5);
+  }
+}
+function initEmblem(el,e){
+  if(!el)return;
+  const cv=document.createElement("canvas");
+  cv.style.cssText="position:absolute;inset:0;width:100%;height:100%";
+  el.style.position="relative";el.innerHTML="";el.appendChild(cv);
+  const ctx=cv.getContext&&cv.getContext("2d");if(!ctx)return;
+  const DPR=Math.min(2,window.devicePixelRatio||1);
+  const W=el.clientWidth||440,H=el.clientHeight||230;
+  cv.width=W*DPR;cv.height=H*DPR;ctx.scale(DPR,DPR);
+  const S=mkEmblemState(W,H,true);
+  let px=0,py=0;
+  el.addEventListener("mousemove",ev=>{const r=el.getBoundingClientRect();px=(ev.clientX-r.left)/r.width-0.5;py=(ev.clientY-r.top)/r.height-0.5;});
+  el.addEventListener("mouseleave",()=>{px=py=0;});
+  const d=dayNum(e);
+  const o={h:healthOf(e),label:"Day "+d+" · "+fmtRu(dateOfDay(e,d))};
+  const rec={raf:0};SCENES.push(rec);
+  const t0=performance.now();
+  function frame(now){
+    if(!cv.isConnected){cancelAnimationFrame(rec.raf);return;}
+    drawEmblem(ctx,W,H,S,o,(now-t0)/1000,px,py);
+    rec.raf=requestAnimationFrame(frame);
+  }
+  rec.raf=requestAnimationFrame(frame);
+}
+function drawMiniAscent(cv,p,h){
+  const W=cv.width=cv.clientWidth||330,H=cv.height=cv.clientHeight||148;
+  const ctx=cv.getContext&&cv.getContext("2d");if(!ctx)return;
+  const S=mkEmblemState(W,H,false);
+  const o={h,label:null};
+  const rec={raf:0};SCENES.push(rec);
+  const t0=performance.now();
+  function frame(now){
+    if(!cv.isConnected){cancelAnimationFrame(rec.raf);return;}
+    drawEmblem(ctx,W,H,S,o,(now-t0)/1000,0,0);
+    rec.raf=requestAnimationFrame(frame);
+  }
+  rec.raf=requestAnimationFrame(frame);
+}
+
+/* ================= ROUTER ================= */
+function go(view,empId,tab){
+  UI.view=view; if(empId)UI.emp=empId; if(tab)UI.tab=tab;
+  render();
+  window.scrollTo({top:0});
+}
+function render(){
+  destroyScenes();
+  document.getElementById("v-home").classList.toggle("on",UI.view==="home");
+  document.getElementById("v-emp").classList.toggle("on",UI.view==="emp");
+  document.getElementById("crumb").innerHTML=UI.view==="emp"&&E()?`<span style="cursor:pointer" onclick="go('home')">Команда</span> / <b>${E().meta.name}</b>`:"";
+  if(UI.view==="home")renderHome(); else renderEmp();
+}
+
+/* ================= HOME ================= */
+function renderHome(){
+  const n=HUB.employees.length;
+  const act=HUB.employees.filter(e=>dayNum(e)<e.meta.days).length;
+  const openObs=HUB.employees.reduce((s,e)=>s+e.observations.filter(o=>o.status==="open").length,0);
+  document.getElementById("dash-sub").textContent=`${n} ${n===1?"новичок":"новичка"} · ${act} в активной фазе · ближайшее пятничное ревью: ${nextFriday()} · открытых наблюдений: ${openObs}`;
+  const tcol={up:["#16a34a","Трек растёт"],flat:["#d97706","Трек ровный"],down:["#dc2626","Нужно внимание"],new:["#64748b","Старт"]};
+  document.getElementById("team").innerHTML=HUB.employees.map(e=>{
+    const d=dayNum(e),p=progress(e),[tc,tl]=tcol[trend(e)];
+    const obsN=e.observations.filter(o=>o.status==="open").length;
+    const ring=2*Math.PI*17;
+    return `<div class="ecard" onclick="go('emp','${e.id}','timeline')">
+      <div class="scene" style="background:${phaseBgCss(p)}"><canvas id="mini-${e.id}"></canvas>
+        <span class="daypill">Day ${d} / ${e.meta.days}</span>
+        <span class="statpill" style="background:${tc}">${tl}</span>
+      </div>
+      <div class="body" style="position:relative">
+        <div class="nm">${e.meta.name}</div>
+        <div class="rl">${e.meta.role} · менеджер: ${e.meta.manager}</div>
+        <div class="meta">
+          <span>Ревью: <b>${e.reviews.length}</b></span>
+          <span>Задачи: <b>${e.tasks.filter(t=>t.status==="done").length}/${e.tasks.length}</b></span>
+          <span>Наблюдения: <b style="color:${obsN?"var(--amber)":"inherit"}">${obsN} open</b></span>
+          <span>${stageOf(p)}</span>
+        </div>
+        <div class="ringwrap"><svg width="44" height="44"><circle cx="22" cy="22" r="17" fill="none" stroke="#e8ece9" stroke-width="5"/><circle cx="22" cy="22" r="17" fill="none" stroke="#0e9f6e" stroke-width="5" stroke-linecap="round" stroke-dasharray="${ring*p} ${ring}" transform="rotate(-90 22 22)"/><text x="22" y="26" text-anchor="middle" font-size="10.5" font-weight="700" fill="#15201a">${Math.round(p*100)}%</text></svg></div>
+      </div>
+    </div>`;
+  }).join("")+`<div class="addcard" onclick="openModal()"><span class="plus">+</span><span style="font-weight:600">Новый сотрудник</span><span style="font-size:12px">план из скиллсета за минуту</span></div>`;
+  HUB.employees.forEach(e=>{const cv=document.getElementById("mini-"+e.id);if(cv)drawMiniAscent(cv,progress(e),healthOf(e));});
+}
+
+/* ================= EMPLOYEE ================= */
+const TABS=[["timeline","Таймлайн"],["checkin","Friday Check-in"],["track","Трек"],["ninebox","9-Box"],["lead","Лидерство"],["tasks","Задачи"],["obs","Наблюдения"],["profile","Профиль"]];
+function renderEmp(){
+  const e=E(); if(!e){go("home");return;}
+  const p=progress(e),h=healthOf(e),d=dayNum(e);
+  const mm=lastR(e)?maturityOf(e,lastR(e)):null;
+  document.getElementById("hero").innerHTML=`
+    <div class="hero-inner hero-dark" style="background:${phaseBgCss(p)}">
+      <div class="hero-scene" id="scene3d"></div>
+      <div class="hero-info">
+        <div class="role">${e.meta.role} · менеджер: ${e.meta.manager} · старт ${e.meta.startDate}</div>
+        <h1>${e.meta.name}</h1>
+        <div class="hero-stats">
+          <div class="hstat"><div class="v">Day ${d}</div><div class="k">из ${e.meta.days}</div></div>
+          <div class="hstat"><div class="v">${e.reviews.length}</div><div class="k">ревью</div></div>
+          <div class="hstat"><div class="v">${Math.round(h*100)}%</div><div class="k">соответствие target</div></div>
+          <div class="hstat"><div class="v">${mm?"S"+mm.D:"—"}</div><div class="k">режим лидерства</div></div>
+          <div class="hstat"><div class="v">${e.tasks.filter(t=>t.status==="done").length}/${e.tasks.length}</div><div class="k">задачи</div></div>
+          <div class="hstat"><div class="v">${e.observations.filter(o=>o.status==="open").length}</div><div class="k">набл. open</div></div>
+        </div>
+        <div class="hero-bottom">
+          <div class="stagebar"><span class="stage-name">${stageOf(p)}</span><div class="pbar"><i style="width:${p*100}%"></i></div><span>${Math.round(p*100)}%</span></div>
+        </div>
+      </div>
+    </div>`;
+  initEmblem(document.getElementById("scene3d"),e);
+  document.getElementById("tabs").innerHTML=TABS.map(([id,l])=>{
+    let n="";
+    if(id==="tasks")n=`<span class="n">${e.tasks.filter(t=>t.status!=="done").length}</span>`;
+    if(id==="obs")n=`<span class="n">${e.observations.filter(o=>o.status==="open").length}</span>`;
+    return `<button class="tab ${UI.tab===id?"on":""}" onclick="go('emp','${e.id}','${id}')">${l}${n}</button>`;
+  }).join("");
+  const B=document.getElementById("tabbody");
+  if(UI.tab==="timeline"){B.innerHTML=tplTimeline(e);initJourney(e);}
+  if(UI.tab==="checkin"){B.innerHTML=tplCheckin(e);}
+  if(UI.tab==="track")B.innerHTML=tplTrack(e);
+  if(UI.tab==="ninebox"){B.innerHTML=tplNinebox(e);placeDots(e);}
+  if(UI.tab==="lead")B.innerHTML=tplLead(e);
+  if(UI.tab==="tasks")B.innerHTML=tplTasks(e);
+  if(UI.tab==="obs")B.innerHTML=tplObs(e);
+  if(UI.tab==="profile")B.innerHTML=tplProfile(e);
+}
+
+/* ================= JOURNEY MAP ================= */
+function dateOfDay(e,d){const dt=new Date(e.meta.startDate+"T00:00:00");dt.setDate(dt.getDate()+d);return dt.toISOString().slice(0,10);}
+function fmtRu(iso){const m=["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];const d=new Date(iso+"T00:00:00");return d.getDate()+" "+m[d.getMonth()];}
+function roundRectPath(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+function tplTimeline(e){
+  const legend=`<div class="legend"><span><i style="background:#34d399"></i>высокое соответствие / готово</span><span><i style="background:#a3e635"></i>хорошо</span><span><i style="background:#fbbf24"></i>средне</span><span><i style="background:#f87171"></i>низко / блок</span><span><i style="background:#60a5fa"></i>задача в работе</span><span style="margin-left:auto">двигайте курсором — космос отвечает; наведите на точки</span></div>`;
+  return `<div class="insight">${buildInsight(e)}</div>
+  <div class="card"><h2>Карта пути 0 → ${e.meta.days}</h2><div class="hint">Старт зафиксирован: ${fmtRu(e.meta.startDate)}. Комета — сегодняшний день. Точки на маршруте — пятничные ревью, россыпь под фазами — задачи.</div>
+  <div style="border-radius:14px;overflow:hidden"><canvas id="journey" style="width:100%;display:block;cursor:crosshair"></canvas></div>${legend}</div>`;
+}
+function initJourney(e){
+  const cv=document.getElementById("journey");if(!cv)return;
+  const ctx=cv.getContext&&cv.getContext("2d");if(!ctx)return;
+  const DPR=Math.min(2,window.devicePixelRatio||1);
+  const W=cv.clientWidth||1100,H=430;
+  cv.width=W*DPR;cv.height=H*DPR;cv.style.height=H+"px";ctx.scale(DPR,DPR);
+  const days=e.meta.days,d=dayNum(e),h=healthOf(e),aur=auraHex(h);
+  const pad=70,midY=215,amp=74;
+  const P=t=>({x:pad+t*(W-2*pad),y:midY+Math.sin(t*Math.PI*2.2-0.5)*amp});
+  const stars=[];for(let i=0;i<230;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+0.3,z:0.25+Math.random()*0.75,tw:Math.random()*6.28});
+  const nebCols=[["#2742a8","#4f46e5"],["#0b6b75","#14b8a6"],["#8a6a12","#d4a017"]];
+  const nebs=[];for(let i=0;i<3;i++)for(let j=0;j<3;j++){const t=clamp((i+0.2+0.3*j)/3,0,1);const pt=P(t);
+    nebs.push({x:pt.x+(Math.random()-0.5)*130,y:pt.y+(Math.random()-0.5)*170,r:60+Math.random()*75,c:nebCols[i][j%2],seed:Math.random()*6.28});}
+  const nodes=e.reviews.map(rv=>{const dd=Math.min(rv.week*7,days);const pt=P(dd/days);const sc=reviewScore(e,rv);
+    return {x:pt.x,y:pt.y,sc,tip:`W${rv.week} · ${fmtRu(rv.date)} · ${Math.round(sc*100)}% соответствия${rv.note?" — "+rv.note:""}`,col:sc>=0.9?"#34d399":sc>=0.75?"#a3e635":sc>=0.6?"#fbbf24":"#f87171"};});
+  const miles=[0,30,60,90].map(m=>({d:m,...P(m/days)}));
+  const taskDots=[];{const byPh={30:0,60:0,90:0};
+    e.tasks.forEach(t=>{const base=t.phase===30?15:t.phase===60?45:75;const idx=byPh[t.phase]++;const pt=P(base/days);
+      taskDots.push({x:pt.x-26+(idx%5)*13,y:pt.y+52+Math.floor(idx/5)*14,col:t.status==="done"?"#34d399":t.status==="half"?"#fbbf24":t.status==="prog"?"#60a5fa":t.status==="block"?"#f87171":"#64748b",tip:t.title+" — "+STATUSES[t.status][1]});});}
+  let mx=-999,my=-999;const sparks=[];
+  cv.addEventListener("mousemove",ev=>{
+    const r=cv.getBoundingClientRect();mx=(ev.clientX-r.left)*(W/r.width);my=(ev.clientY-r.top)*(H/r.height);
+    for(let i=0;i<2;i++)sparks.push({x:mx+(Math.random()-0.5)*16,y:my+(Math.random()-0.5)*16,vx:(Math.random()-0.5)*0.7,vy:(Math.random()-0.5)*0.7-0.25,life:1});
+    if(sparks.length>90)sparks.splice(0,sparks.length-90);
+    const tip=document.getElementById("tip");let hit=null;
+    nodes.concat(taskDots).forEach(n=>{if((mx-n.x)**2+(my-n.y)**2<280)hit=n;});
+    if(hit){tip.textContent=hit.tip;tip.style.opacity=1;tip.style.left=(ev.clientX+14)+"px";tip.style.top=(ev.clientY+10)+"px";cv.style.cursor="pointer";}
+    else{tip.style.opacity=0;cv.style.cursor="crosshair";}
+  });
+  cv.addEventListener("mouseleave",()=>{mx=my=-999;document.getElementById("tip").style.opacity=0;});
+  const rec={raf:0};SCENES.push(rec);
+  const t0=performance.now();
+  function frame(now){
+    if(!cv.isConnected){cancelAnimationFrame(rec.raf);return;}
+    const T=(now-t0)/1000;
+    const px=(mx>-500?(mx-W/2)/W:0),py=(my>-500?(my-H/2)/H:0);
+    ctx.clearRect(0,0,W,H);
+    const g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,"#070b1d");g.addColorStop(0.5,"#0b1430");g.addColorStop(1,"#101b3f");
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    nebs.forEach(n=>{const ox=px*16,oy=py*12;
+      const rr=n.r*(1+0.06*Math.sin(T*0.6+n.seed));
+      const rg=ctx.createRadialGradient(n.x-ox,n.y-oy,0,n.x-ox,n.y-oy,rr);
+      rg.addColorStop(0,n.c+"30");rg.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.fillStyle=rg;ctx.fillRect(n.x-ox-rr*1.4,n.y-oy-rr*1.4,rr*2.8,rr*2.8);});
+    stars.forEach(s=>{let x=s.x-px*46*s.z,y=s.y-py*34*s.z;
+      const dx2=x-mx,dy2=y-my,dist=Math.hypot(dx2,dy2);
+      if(dist<70&&dist>0.1){const f=(70-dist)/70*10;x+=dx2/dist*f;y+=dy2/dist*f;}
+      ctx.globalAlpha=0.3+0.6*Math.abs(Math.sin(T*1.5*s.z+s.tw));
+      ctx.fillStyle="#cfd9f7";ctx.beginPath();ctx.arc(x,y,s.r,0,6.283);ctx.fill();});
+    ctx.globalAlpha=1;
+    /* route ahead */
+    ctx.setLineDash([3,7]);ctx.strokeStyle="rgba(160,175,220,.35)";ctx.lineWidth=1.6;
+    ctx.beginPath();for(let i=0;i<=110;i++){const pt=P(i/110);i?ctx.lineTo(pt.x,pt.y):ctx.moveTo(pt.x,pt.y);}ctx.stroke();ctx.setLineDash([]);
+    /* route travelled */
+    const tp=d/days;
+    if(tp>0.001){
+      const lg=ctx.createLinearGradient(P(0).x,0,P(tp).x,0);lg.addColorStop(0,aur[0]+"55");lg.addColorStop(1,aur[1]);
+      ctx.strokeStyle=lg;ctx.lineWidth=3.4;ctx.shadowColor=aur[0];ctx.shadowBlur=14;
+      ctx.beginPath();for(let i=0;i<=100;i++){const pt=P(i/100*tp);i?ctx.lineTo(pt.x,pt.y):ctx.moveTo(pt.x,pt.y);}ctx.stroke();ctx.shadowBlur=0;
+    }
+    /* milestones */
+    ctx.textAlign="center";
+    miles.forEach(m=>{
+      ctx.strokeStyle="rgba(190,200,235,.55)";ctx.lineWidth=1.2;
+      ctx.beginPath();ctx.arc(m.x,m.y,13+1.5*Math.sin(T*1.4+m.d),0,6.283);ctx.stroke();
+      ctx.fillStyle="#e8edff";ctx.font="700 11px -apple-system,'Segoe UI',Arial";
+      ctx.fillText(m.d===0?"Start":"Day "+m.d,m.x,m.y-24);
+      ctx.fillStyle="rgba(190,200,235,.7)";ctx.font="10px -apple-system,'Segoe UI',Arial";
+      ctx.fillText(fmtRu(dateOfDay(e,m.d)),m.x,m.y+32);
+    });
+    /* review nodes */
+    nodes.forEach(n=>{const hov=(mx-n.x)**2+(my-n.y)**2<280;const r=hov?11:8;
+      ctx.fillStyle=n.col+"40";ctx.beginPath();ctx.arc(n.x,n.y,r+6,0,6.283);ctx.fill();
+      ctx.fillStyle=n.col;ctx.beginPath();ctx.arc(n.x,n.y,r*0.6,0,6.283);ctx.fill();
+      ctx.strokeStyle="rgba(255,255,255,.9)";ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(n.x,n.y,r*0.6,0,6.283);ctx.stroke();});
+    /* task dots */
+    taskDots.forEach(n=>{const hov=(mx-n.x)**2+(my-n.y)**2<280;
+      ctx.globalAlpha=hov?1:0.85;ctx.fillStyle=n.col;ctx.beginPath();ctx.arc(n.x,n.y,hov?6:4.5,0,6.283);ctx.fill();});
+    ctx.globalAlpha=1;
+    /* comet today */
+    const cp2=P(tp);
+    for(let i=1;i<=14;i++){const pt=P(Math.max(0,tp-i*0.006));
+      ctx.globalAlpha=0.5*(1-i/14);ctx.fillStyle=aur[0];ctx.beginPath();ctx.arc(pt.x,pt.y,7*(1-i/16),0,6.283);ctx.fill();}
+    ctx.globalAlpha=1;
+    const pulse=1+0.12*Math.sin(T*3);
+    const cg=ctx.createRadialGradient(cp2.x,cp2.y,0,cp2.x,cp2.y,26*pulse);
+    cg.addColorStop(0,"#ffffff");cg.addColorStop(0.25,aur[1]);cg.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=cg;ctx.beginPath();ctx.arc(cp2.x,cp2.y,26*pulse,0,6.283);ctx.fill();
+    ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(cp2.x,cp2.y,4.4,0,6.283);ctx.fill();
+    const lab=`Day ${d} · ${fmtRu(dateOfDay(e,d))}`;
+    ctx.font="700 11.5px -apple-system,'Segoe UI',Arial";
+    const tw2=ctx.measureText(lab).width+18;
+    const ly=cp2.y-46<14?cp2.y+34:cp2.y-46;
+    roundRectPath(ctx,cp2.x-tw2/2,ly,tw2,22,11);ctx.fillStyle="rgba(255,255,255,.93)";ctx.fill();
+    ctx.fillStyle="#0c1228";ctx.fillText(lab,cp2.x,ly+15);
+    /* cursor sparks */
+    for(let i=sparks.length-1;i>=0;i--){const s=sparks[i];s.x+=s.vx;s.y+=s.vy;s.life-=0.02;
+      if(s.life<=0){sparks.splice(i,1);continue;}
+      ctx.globalAlpha=s.life*0.8;ctx.fillStyle=aur[1];ctx.beginPath();ctx.arc(s.x,s.y,1.6,0,6.283);ctx.fill();}
+    ctx.globalAlpha=1;
+    rec.raf=requestAnimationFrame(frame);
+  }
+  rec.raf=requestAnimationFrame(frame);
+}
+
+/* ================= CHECK-IN ================= */
+let ciLead=2;
+function tplCheckin(e){
+  const last=lastR(e);ciDraft={};
+  items(e).forEach(it=>{ciDraft[it.id]=last?(last.r[it.id]||3):3;});
+  const wk=last?last.week+1:0;
+  const m=last?maturityOf(e,last):null;
+  ciLead=m?m.sug:2;
+  const groups=[["Critical skills",e.skills.filter(s=>s.g==="Critical")],["Must skills",e.skills.filter(s=>s.g==="Must")],["Good skills",e.skills.filter(s=>s.g==="Good")],["Отношение к работе",e.attitude],["Потенциал",e.potential]].filter(g=>g[1].length);
+  const rows=groups.map(([g,list])=>`<div class="groupbar"><h3>${g}</h3><div class="ln"></div></div>`+list.map(it=>{
+    const tg=it.g&&TGT[it.g]?`target ${TGT[it.g]}`:"";
+    const prev=last?(last.r[it.id]||"—"):"—";
+    return `<div class="ci-row"><div class="ci-name"><div class="nm">${it.name}</div><div class="tg">${tg}${tg?" · ":""}прошлая неделя: ${prev}</div></div><div class="seg" id="seg-${it.id}">${[1,2,3,4,5].map(v=>`<button class="${ciDraft[it.id]===v?"sel":""}" onclick="setR('${it.id}',${v})">${v}</button>`).join("")}</div></div>`;
+  }).join("")).join("");
+  const leadBtns=[1,2,3,4].map(D=>`<button class="lead-btn ${ciLead===D?"sel":""}" id="lb-${D}" onclick="setLead(${D})"><b>D${D} — ${LEAD[D].s.split("·")[1].trim()}</b><span>${LEAD[D].d.split(":")[1].trim()}</span></button>`).join("");
+  return `<div class="card"><h2>Friday Check-in — неделя ${wk}</h2><div class="hint">3–5 минут: всё предзаполнено прошлой неделей — меняйте только сдвиги. 1 = далеко от ожиданий, 5 = соответствует/превосходит.</div>
+  ${rows}
+  <div class="groupbar"><h3>Зрелость в роли — режим лидерства</h3><div class="ln"></div></div>
+  <div class="hint" style="margin-bottom:8px">Подсказка системы: <b>D${m?m.sug:"—"}</b>${m?` (компетентность ${Math.round(m.comp*100)}% × настрой ${Math.round(m.commit*100)}%)`:""}. Подтвердите или поправьте — от этого зависит рекомендация по вашему ресурсу на вкладке «Лидерство».</div>
+  <div class="lead-grid">${leadBtns}</div>
+  <div class="groupbar"><h3>Наблюдение недели</h3><div class="ln"></div></div>
+  <textarea id="ci-note" rows="2" placeholder="Что бросилось в глаза? (уйдёт в Наблюдения со статусом open)"></textarea>
+  <div class="savebar"><button class="btn btn-g" onclick="render()">Отменить</button><button class="btn btn-p" onclick="saveCheckin()">Сохранить неделю →</button></div></div>`;
+}
+function setLead(D){ciLead=D;[1,2,3,4].forEach(k=>{const b=document.getElementById("lb-"+k);if(b)b.classList.toggle("sel",k===D);});}
+function setR(id,v){ciDraft[id]=v;const seg=document.getElementById("seg-"+id);[...seg.children].forEach((b,i)=>b.classList.toggle("sel",i+1===v));}
+function saveCheckin(){
+  const e=E(),last=lastR(e);
+  const wk=last?last.week+1:0;
+  const note=document.getElementById("ci-note").value.trim();
+  const tasks={};e.tasks.forEach(t=>tasks[t.id]=t.status);
+  e.reviews.push({week:wk,date:new Date().toISOString().slice(0,10),r:{...ciDraft},tasks,note,lead:ciLead});
+  if(note)e.observations.push({id:"o"+Date.now(),date:new Date().toISOString().slice(0,10),text:note,status:"open",comment:""});
+  save();UI.tab="track";render();toast(`Неделя ${wk} сохранена ✓`);
+}
+
+/* ================= INSIGHT ================= */
+function buildInsight(e){
+  const last=lastR(e),prev=prevR(e);
+  if(!last)return "<h2>💡 Авто-заключение</h2><div class='hint'>Сохраните первый Friday Check-in.</div>";
+  if(!prev)return "<h2>💡 Авто-заключение</h2><div class='hint'>Baseline зафиксирован. Динамика появится после первого еженедельного ревью.</div>";
+  const its=items(e);const ups=[],downs=[];
+  its.forEach(it=>{const d=(last.r[it.id]||0)-(prev.r[it.id]||0);if(d>0)ups.push([it,d]);if(d<0)downs.push([it,d]);});
+  const stag=[];
+  if(e.reviews.length>=3)its.forEach(it=>{const l3=e.reviews.slice(-3).map(rv=>rv.r[it.id]||0);if(l3.every(v=>v===l3[0])&&l3[0]<it.target)stag.push(it);});
+  const att=avg(e.attitude.map(a=>last.r[a.id]||0)),attP=avg(e.attitude.map(a=>prev.r[a.id]||0));
+  const pot=avg(e.potential.map(p=>last.r[p.id]||0)),potP=avg(e.potential.map(p=>prev.r[p.id]||0));
+  const done=Object.values(last.tasks||{}).filter(s=>s==="done").length,doneP=Object.values(prev.tasks||{}).filter(s=>s==="done").length;
+  const blocked=e.tasks.filter(t=>t.status==="block");
+  let li=[];
+  if(ups.length)li.push(`<li><b style="color:var(--green)">Рост:</b> ${ups.map(([it,d])=>`${it.short||it.name.split("—")[0].trim()} <span class="d-up">+${d}</span>`).join(", ")}.</li>`);
+  if(downs.length)li.push(`<li><b style="color:var(--red)">Снижение:</b> ${downs.map(([it,d])=>`${it.short||it.name.split("—")[0].trim()} <span class="d-dn">${d}</span>`).join(", ")} — тема для 1:1.</li>`);
+  if(!ups.length&&!downs.length)li.push(`<li>Оценки без изменений vs прошлая неделя.</li>`);
+  if(att>attP)li.push(`<li>Отношение к работе укрепляется (${attP.toFixed(1)} → ${att.toFixed(1)}) — вовлечённость растёт.</li>`);
+  if(att<attP)li.push(`<li>Отношение к работе просело (${attP.toFixed(1)} → ${att.toFixed(1)}) — проверьте нагрузку.</li>`);
+  if(pot>potP)li.push(`<li>Сигналы потенциала усиливаются (${potP.toFixed(1)} → ${pot.toFixed(1)}) — быстро обучается, действует сам.</li>`);
+  if(done>doneP)li.push(`<li>Задачи: +${done-doneP} закрыто за неделю.</li>`);
+  if(blocked.length)li.push(`<li><b style="color:var(--red)">Блокеры:</b> ${blocked.map(t=>t.title).join("; ")} — нужна помощь менеджера.</li>`);
+  if(stag.length)li.push(`<li><b style="color:var(--amber)">Без динамики 3+ недели (ниже target):</b> ${stag.map(s=>s.short||s.name).join(", ")} — нужен план, само не сдвинется.</li>`);
+  const openObs=e.observations.filter(o=>o.status==="open").length;
+  if(openObs)li.push(`<li>${openObs} наблюдени${openObs===1?"е":"я"} в статусе open ждут решения.</li>`);
+  const gapN=avg(its.map(it=>it.target-(last.r[it.id]||0))),gapP=avg(its.map(it=>it.target-(prev.r[it.id]||0)));
+  let verdict;
+  if(gapN<gapP-0.04)verdict="Трек положительный: разрыв с ожиданиями роли сокращается, план идёт по графику.";
+  else if(gapN>gapP+0.04)verdict="Трек тревожный: разрыв с ожиданиями вырос. Рекомендуется отдельный разговор и пересборка ближайших задач.";
+  else verdict="Трек ровный: без существенных сдвигов. Если позиции ниже target простоят ещё 2 недели — пересмотрите задачи или ожидания.";
+  return `<h2>💡 Авто-заключение · W${last.week} vs W${prev.week}</h2><ul>${li.join("")}</ul><div class="verdict"><b>Вывод:</b> ${verdict}</div>`;
+}
+
+/* ================= TRACK ================= */
+function spark(vals,target){
+  const w=120,h=30,n=vals.length;
+  if(n<2)return `<span class="muted" style="font-size:11px">мало данных</span>`;
+  const x=i=>4+i*(w-8)/(n-1),y=v=>h-3-(v-1)*(h-7)/4;
+  const pts=vals.map((v,i)=>`${x(i)},${y(v)}`).join(" ");
+  return `<svg width="${w}" height="${h}" style="vertical-align:middle"><line x1="2" y1="${y(target)}" x2="${w-2}" y2="${y(target)}" stroke="#d3dcd6" stroke-dasharray="3,3"/><polyline points="${pts}" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round"/><circle cx="${x(n-1)}" cy="${y(vals[n-1])}" r="3" fill="#0e9f6e"/></svg>`;
+}
+function tplTrack(e){
+  if(!e.reviews.length)return "<div class='card'><div class='hint'>Нет данных.</div></div>";
+  const last=lastR(e),prev=prevR(e);
+  const groups=[["Скиллы",items(e).filter(i=>i.kind==="skill")],["Отношение к работе",items(e).filter(i=>i.kind==="attitude")],["Потенциал",items(e).filter(i=>i.kind==="potential")]];
+  const radar=radarSVG(e);
+  const tbl=groups.map(([g,list])=>`<div class="groupbar"><h3>${g}</h3><div class="ln"></div></div><table>${list.map(it=>{
+    const hist=e.reviews.map(rv=>rv.r[it.id]||0);const cur=last.r[it.id]||0;
+    const d=prev?cur-(prev.r[it.id]||0):0;
+    const dH=!prev?"":d>0?`<span class="delta d-up">▲ +${d}</span>`:d<0?`<span class="delta d-dn">▼ ${d}</span>`:`<span class="delta d-eq">—</span>`;
+    const gap=cur>=it.target?`<span class="badge" style="background:var(--green-soft);color:var(--green)">target ✓</span>`:`<span class="tag-dim">gap ${it.target-cur}</span>`;
+    return `<tr><td style="width:34%"><b>${it.name}</b>${it.g&&TGT[it.g]?` <span class="tag-dim">${it.g}</span>`:""}</td><td style="width:130px">${spark(hist,it.target)}</td><td><b>${cur}</b><span class="tag-dim">/${it.target}</span>${dH}</td><td style="text-align:right">${gap}</td></tr>`;
+  }).join("")}</table>`).join("");
+  return `<div class="insight">${buildInsight(e)}</div>
+  <div class="grid2"><div class="card"><h2>Паутинка скиллов</h2><div class="hint">Target роли vs Day 0 vs последняя неделя</div>${radar}
+  <div class="legend"><span><i style="background:#c6cfc9"></i>Target</span><span><i style="background:#f59e0b"></i>Day 0</span><span><i style="background:#0e9f6e"></i>Сейчас</span></div></div>
+  <div class="card"><h2>История ревью</h2><table><tr><th>Неделя</th><th>Дата</th><th>Соотв.</th><th>Заметка</th></tr>${e.reviews.map(rv=>`<tr><td><b>W${rv.week}</b></td><td>${rv.date}</td><td>${Math.round(reviewScore(e,rv)*100)}%</td><td class="muted">${rv.note||""}</td></tr>`).join("")}</table></div></div>
+  <div class="card"><h2>Трек по позициям</h2>${tbl}</div>`;
+}
+function radarSVG(e){
+  const N=e.skills.length,cx=270,cy=215,R=130;
+  const ang=i=>-Math.PI/2+i*2*Math.PI/N;
+  const pt=(i,val)=>{const a=ang(i);const r=R*val/5;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];};
+  const poly=(vals,color,fill,w)=>`<polygon points="${vals.map((v,i)=>pt(i,v).join(",")).join(" ")}" fill="${fill}" stroke="${color}" stroke-width="${w}" stroke-linejoin="round"/>`;
+  let grid="";for(let l=1;l<=5;l++)grid+=`<polygon points="${e.skills.map((_,i)=>pt(i,l).join(",")).join(" ")}" fill="none" stroke="#e3e8e4"/>`;
+  let axes="",labels="";
+  e.skills.forEach((s,i)=>{
+    const [x,y]=pt(i,5);axes+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#eef2ef"/>`;
+    const a=ang(i),lr=R+16;
+    const lx=cx+lr*Math.cos(a),ly=cy+lr*Math.sin(a);
+    const anch=Math.abs(lx-cx)<16?"middle":(lx>cx?"start":"end");
+    const name=(s.short||s.name).trim();
+    let lines=[name];
+    if(name.length>15){
+      const words=name.split(" ");
+      if(words.length>1){let l1="",l2="";
+        words.forEach(wd=>{if(!l2&&(l1+" "+wd).trim().length<=15)l1=(l1+" "+wd).trim();else l2=(l2+" "+wd).trim();});
+        lines=[l1,l2].filter(Boolean);
+      }else lines=[name.slice(0,15),name.slice(15)];
+    }
+    const y0=ly-(lines.length-1)*5.5+(Math.abs(ly-cy)<6?4:(ly<cy?-2:8));
+    labels+=`<text font-size="10.5" fill="#56635c" text-anchor="${anch}">${lines.map((ln,k)=>`<tspan x="${lx}" y="${y0+k*11.5}">${ln}</tspan>`).join("")}</text>`;
+  });
+  const tgt=e.skills.map(s=>TGT[s.g]);
+  const base=e.reviews[0]?e.skills.map(s=>e.reviews[0].r[s.id]||0):null;
+  const last=lastR(e)&&e.reviews.length>1?e.skills.map(s=>lastR(e).r[s.id]||0):null;
+  let b=grid+axes+poly(tgt,"#c6cfc9","rgba(198,207,201,.25)",1.5);
+  if(base)b+=poly(base,"#f59e0b","rgba(245,158,11,.10)",1.8);
+  if(last)b+=poly(last,"#0e9f6e","rgba(14,159,110,.16)",2.2);
+  return `<svg viewBox="0 0 540 435" style="width:100%;max-width:580px;display:block;margin:0 auto">${b}${labels}</svg>`;
+}
+
+/* ================= 9BOX (Talent Review Matrix) ================= */
+const NB_DATA=[
+ [{n:"Загадка · Enigma",s:"потенциал высокий, результата нет",c:"y",a:"Сильный профессионал не показывает результат — почти всегда есть блокер: контекст, доступы, мотивация, перегрузка, личное. Найдите и уберите препятствие, назначьте коучинг/менторство. Не давите на performance, пока не нашли причину."},
+  {n:"Растущий · Growth Employee",s:"хорош в роли, может больше",c:"g",a:"Отлично справляется и имеет запас. Дайте stretch-задачи на ступень выше текущей роли — пусть готовится к следующему уровню. Опасность этого квадранта — скука: без вызова уйдёт."},
+  {n:"Будущий лидер · Future Leader",s:"стабильно силён в любых задачах",c:"g",a:"Суперзвезда: big picture, самомотивация, решает проблемы сам. Приоритет — удержание: видимость у фаундера, стратегические задачи, понятный план роста. Потерять такого новичка — самая дорогая ошибка онбординга."}],
+ [{n:"Дилемма · Dilemma",s:"потенциал виден, прогресс буксует",c:"r",a:"С плотным коучингом может прогрессировать в рамках уровня. Поставьте конкретные stretch-цели с дедлайном, усильте сопровождение и зафиксируйте дату пересмотра через 2–3 недели. Без явного плана этот квадрант не рассасывается сам."},
+  {n:"Кор команды · Core Employee",s:"устойчивая середина",c:"y",a:"Опора команды. Можно расширять зону ответственности на том же уровне; точечный коучинг в западающих зонах (смотрите трек скиллов). Не вешайте «звёздные» ожидания — это путь к выгоранию обоих."},
+  {n:"Высокий вклад · High Impact",s:"результат выше ожиданий",c:"g",a:"Текущая роль ещё даёт пространство для роста. Смещайте фокус с тактических задач на стратегическое мышление — это его следующая ступень. Подключайте к решениям уровнем выше."}],
+ [{n:"Под вопросом · Under Performer",s:"низкий результат и потенциал",c:"r",a:"На онбординге — красный флаг. Сначала исключите ошибку онбординга: пересоберите задачи, проверьте доступы и ясность ожиданий, дайте 2 недели с явными критериями успеха. Нет сдвига — честный разговор о пересмотре роли/уровня или расставании. Тянуть дороже."},
+  {n:"Исполнитель · Effective",s:"делает своё, роста не видно",c:"r",a:"Результат есть, но потолок близко. Коучинг на гибкость и инициативу: давайте задачи без готового решения, поощряйте «почему» вместо «как». Проверьте — возможно, человек просто зажат рамками онбординга и боится выходить за них."},
+  {n:"Надёжный профи · Trusted Pro",s:"опытный, высокий результат",c:"y",a:"Ценный сотрудник, достигший потолка потенциала — и это нормально. Поощряйте, развивайте коммуникацию и делегирование, сделайте наставником для следующих новичков. Не пытайтесь «лечить» отсутствие амбиций на рост."}]
+];
+function tplNinebox(e){
+  let cells="";
+  for(let r=0;r<3;r++)for(let c=0;c<3;c++){const q=NB_DATA[r][c];
+    cells+=`<div class="nb-cell nbc-${q.c}"><b>${q.n}</b>${q.s}</div>`;}
+  const last=lastR(e);let read="<div class='hint'>Нет ревью.</div>";
+  if(last){
+    const p=perfOf(e,last),q2=potOf(e,last);
+    const cr=q2>2/3?0:q2>1/3?1:2,cc=p>2/3?2:p>1/3?1:0;
+    const Q=NB_DATA[cr][cc];
+    const tr0=e.reviews.length>1?`за ${e.reviews.length-1} нед.: performance ${fmtD((p-perfOf(e,e.reviews[0]))*100)} п.п., potential ${fmtD((q2-potOf(e,e.reviews[0]))*100)} п.п. vs Day 0`:"появится после первого ревью";
+    read=`<div class="kv" style="margin-top:8px">
+      <div class="row"><span class="k">Performance</span><span><b>${(p*100).toFixed(0)}%</b> (скиллы взвешенно + задачи)</span></div>
+      <div class="row"><span class="k">Potential</span><span><b>${(q2*100).toFixed(0)}%</b> (обучаемость, discovery, вопросы)</span></div>
+      <div class="row"><span class="k">Квадрант</span><span><b>${Q.n}</b> — ${Q.s}</span></div>
+      <div class="row"><span class="k">Траектория</span><span>${tr0}</span></div></div>
+      <div class="groupbar"><h3>Что делать менеджеру</h3><div class="ln"></div></div>
+      <div style="font-size:13.5px;line-height:1.55">${Q.a}</div>
+      <div style="margin-top:12px;background:var(--bg);border-radius:9px;padding:9px 13px;font-size:12.5px;color:var(--ink2)"><b style="color:var(--ink)">Помните:</b> это срез онбординга, а не годовой talent review. Оценивайте динамику между неделями, а не абсолютную позицию: новичок в «Дилемме» на 2-й неделе — норма, на 8-й — сигнал. Решения по красным квадрантам принимайте только после проверки наблюдений из лога.</div>`;
+  }
+  return `<div class="grid2"><div class="card"><h2>9-Box Talent Review Matrix</h2><div class="hint">Performance × Potential. Точка движется по неделям, хвост — траектория. Цвет квадранта = уровень управленческого внимания: красный — действовать, жёлтый — направлять, зелёный — развивать и удерживать.</div>
+    <div class="nb-wrap"><div class="nb-ylab">Potential →</div><div class="ninebox" id="ninebox">${cells}</div><div></div><div class="nb-xlab">Performance →</div></div></div>
+    <div class="card"><h2>Где ${e.meta.name} сейчас</h2>${read}</div></div>`;
+}
+function placeDots(e){
+  const box=document.getElementById("ninebox");if(!box)return;
+  e.reviews.forEach((rv,i)=>{
+    const p=perfOf(e,rv),q=potOf(e,rv);
+    const el=document.createElement("div");
+    el.className=i===e.reviews.length-1?"nb-dot":"nb-trail";
+    el.style.left=(p*100)+"%";el.style.bottom=(q*100)+"%";
+    el.title=`W${rv.week}: perf ${(p*100).toFixed(0)}%, pot ${(q*100).toFixed(0)}%`;
+    box.appendChild(el);
+  });
+}
+/* ================= SITUATIONAL LEADERSHIP ================= */
+const LEAD=[null,
+ {s:"S1 · Директивный",d:"D1: мотивация высокая, компетентность в нашем контексте ещё не подтверждена",time:"≈30% вашего времени",
+  acts:["Ежедневный чек-ин 10–15 минут","Конкретные инструкции и образцы «как у нас принято»","Ревью каждого деливерабла до отправки наружу","Обратная связь в тот же день, коротким циклом"]},
+ {s:"S2 · Наставнический",d:"D2: первые трудности, мотивация может проседать — самый хрупкий этап",time:"≈20–25% вашего времени",
+  acts:["2–3 совместные рабочие сессии в неделю над реальной задачей","Объясняйте «почему», а не только «что делать»","Хвалите прогресс явно, страхуйте риски тихо","Следите за вовлечённостью — выгорание ожиданий случается именно тут"]},
+ {s:"S3 · Поддерживающий",d:"D3: компетентность есть, уверенность ещё плавает",time:"≈10–15% вашего времени",
+  acts:["Еженедельный 1:1 30–45 минут — вы больше слушаете","Решения принимает сотрудник, вы помогаете взвесить","Разблокируете доступы и людей по запросу","Публичное признание результатов — укрепляет уверенность"]},
+ {s:"S4 · Делегирующий",d:"D4: компетентен и мотивирован — доверяйте",time:"≈5% вашего времени",
+  acts:["Sync раз в 1–2 недели, контроль по вехам и результатам","Полная передача зоны ответственности","Новые вызовы и видимость у руководства","Не микроменеджерьте — для D4 это демотиватор №1"]}];
+function maturityOf(e,rv){
+  if(!rv)return null;
+  const comp=avg(e.skills.map(s=>clamp((rv.r[s.id]||0)/TGT[s.g],0,1)));
+  const commit=avg([...e.attitude.map(a=>rv.r[a.id]||0),...e.potential.map(p2=>rv.r[p2.id]||0)])/5;
+  let sug;
+  if(comp<0.62)sug=commit>=0.75?1:2;
+  else if(comp<0.85)sug=3;
+  else sug=commit>=0.85?4:3;
+  return {D:rv.lead||sug,sug,comp,commit};
+}
+function tplLead(e){
+  const last=lastR(e);
+  if(!last)return "<div class='card'><div class='hint'>Нет ревью — зафиксируйте baseline в Check-in, и здесь появится рекомендация по вашему ресурсу.</div></div>";
+  const m=maturityOf(e,last),L=LEAD[m.D];
+  const hist=e.reviews.map(rv=>({w:rv.week,D:maturityOf(e,rv).D}));
+  const W2=560,H2=130,x0=42;
+  const xs=i=>x0+(W2-66)*(hist.length>1?i/(hist.length-1):0);
+  const ys=D=>H2-22-(D-1)*((H2-50)/3);
+  let chart=`<svg viewBox="0 0 ${W2} ${H2}" style="width:100%;max-width:640px">`;
+  [1,2,3,4].forEach(D=>{chart+=`<line x1="${x0}" y1="${ys(D)}" x2="${W2-18}" y2="${ys(D)}" stroke="#e3e8e4"/><text x="${x0-8}" y="${ys(D)+3.5}" font-size="10" fill="#94a39b" text-anchor="end">D${D}</text>`;});
+  let path="";
+  hist.forEach((hh,i)=>{
+    path+=(i?` L ${xs(i)} ${ys(hist[i-1].D)} L ${xs(i)} ${ys(hh.D)}`:`M ${xs(i)} ${ys(hh.D)}`);
+  });
+  chart+=`<path d="${path}" fill="none" stroke="#0e9f6e" stroke-width="2.2" stroke-linejoin="round"/>`;
+  hist.forEach((hh,i)=>{chart+=`<circle cx="${xs(i)}" cy="${ys(hh.D)}" r="4" fill="#0e9f6e" stroke="#fff" stroke-width="1.5"/><text x="${xs(i)}" y="${H2-6}" font-size="9.5" fill="#94a39b" text-anchor="middle">W${hh.w}</text>`;});
+  chart+="</svg>";
+  const refRows=[1,2,3,4].map(D=>`<tr ${D===m.D?'style="background:var(--accent-soft)"':""}><td style="width:26%"><b>${LEAD[D].s}</b><div class="tag-dim" style="margin-top:2px">${LEAD[D].d}</div></td><td style="width:16%"><b>${LEAD[D].time}</b></td><td>${LEAD[D].acts.join(" · ")}</td></tr>`).join("");
+  return `<div class="grid2">
+   <div class="card"><h2>Режим сейчас: ${L.s}</h2><div class="hint">${L.d}. Подсказка системы: компетентность ${Math.round(m.comp*100)}% × настрой ${Math.round(m.commit*100)}% ${m.D!==m.sug?`(менеджер скорректировал с D${m.sug} на D${m.D})`:""}</div>
+     <div class="kv"><div class="row"><span class="k">Ваш ресурс</span><span><b>${L.time}</b> — закладывайте в календарь заранее</span></div></div>
+     <div class="groupbar"><h3>Что делать менеджеру на этой неделе</h3><div class="ln"></div></div>
+     <ul style="margin-left:18px;display:grid;gap:7px;font-size:13.5px">${L.acts.map(a=>`<li>${a}</li>`).join("")}</ul></div>
+   <div class="card"><h2>Трек зрелости D1 → D4</h2><div class="hint">Цель онбординга — устойчивый D3–D4 к Day 90. Уровень зрелости подтверждается на каждом Friday Check-in. «Залип» на D2 три недели подряд — пересоберите формат поддержки, проблема не в человеке.</div>${chart}</div>
+  </div>
+  <div class="card"><h2>Справочник: ситуационное лидерство (Херси-Бланшар)</h2><div class="hint">Режим лидерства подбирается под зрелость сотрудника в конкретной роли, а не под его стаж. Senior-специалист в новом домене легально проходит через D1–D2.</div>
+  <table><tr><th>Режим</th><th>Ресурс</th><th>Действия менеджера</th></tr>${refRows}</table></div>`;
+}
+
+/* ================= TASKS ================= */
+let taskFilter="active",subFormFor=null;const TASK_COLLAPSE={};
+const TASK_FILTERS=[["active","Активные"],["all","Все"],["half","Недоделанные"],["block","Блокеры"],["done","Готовые"]];
+function taskVisible(t){
+  if(taskFilter==="all")return true;
+  if(taskFilter==="active")return t.status!=="done";
+  return t.status===taskFilter;
+}
+const TASK_DOT={todo:"#b6bfba",prog:"#3b82f6",half:"#e0a426",done:"#22a55c",block:"#e35454"};
+function taskRow(t,isChild,kids){
+  const st=STATUSES[t.status]||STATUSES.todo;
+  const meta=t.kind==="macro"&&kids&&kids.total?`<div class="meta">микро-шаги: ${kids.done} из ${kids.total} готово</div>`:"";
+  const badge=t.kind==="macro"?`<span class="badge" style="background:var(--violet-soft);color:var(--violet);margin-right:7px">Макро</span>`:"";
+  return `<div class="task ${t.status==="done"?"done":""} ${isChild?"tchild":""} ${t.kind==="macro"?"macro":""}">
+    <span class="sdot" style="background:${TASK_DOT[t.status]||"#b6bfba"}"></span>
+    <div class="tt"><div class="nm">${badge}${t.title}</div>${meta}</div>
+    <div class="right">
+      ${!isChild?`<button class="iconb" onclick="openSub('${t.id}')" title="Добавить микро-шаг">+</button>`:""}
+      <button class="iconb" onclick="delTask('${t.id}')" title="Удалить">✕</button>
+      <select class="tstat ${st[0]}" onchange="setTaskStatus('${t.id}',this.value)">${Object.entries(STATUSES).map(([k,kv])=>`<option value="${k}" ${t.status===k?"selected":""}>${kv[1]}</option>`).join("")}</select>
+    </div></div>`;
+}
+function subFormHtml(t){
+  if(subFormFor!==t.id)return "";
+  return `<div class="task tchild" style="grid-template-columns:1fr auto"><input type="text" id="sub-title" placeholder="Микро-шаг: ${t.title.slice(0,42)}" onkeydown="if(event.key==='Enter')addSub('${t.id}')"><div class="right"><button class="btn btn-p btn-sm" onclick="addSub('${t.id}')">OK</button><button class="btn btn-g btn-sm" onclick="subFormFor=null;render()">✕</button></div></div>`;
+}
+function tplTasks(e){
+  const order={block:0,half:1,prog:2,todo:3,done:4};
+  const chips=TASK_FILTERS.map(([k,l])=>{
+    const n=k==="all"?e.tasks.length:e.tasks.filter(t=>k==="active"?t.status!=="done":t.status===k).length;
+    return `<button class="fchip ${taskFilter===k?"on":""}" onclick="setTaskFilter('${k}')">${l}<span>${n}</span></button>`;
+  }).join("");
+  const phases=[[30,"0–30 · Погружение"],[60,"31–60 · Первые решения"],[90,"61–90 · Ownership"]];
+  const sections=phases.map(([ph,label])=>{
+    const all=e.tasks.filter(t=>t.phase===ph);
+    const tops=all.filter(t=>!t.parentId).sort((a,b)=>(order[a.status]??3)-(order[b.status]??3));
+    const done=all.filter(t=>t.status==="done").length;
+    const pct=all.length?Math.round(done/all.length*100):0;
+    const open=!TASK_COLLAPSE[ph];
+    const rows=tops.map(t=>{
+      const kids=all.filter(k=>k.parentId===t.id).sort((a,b)=>(order[a.status]??3)-(order[b.status]??3));
+      const anyVisible=taskVisible(t)||kids.some(taskVisible)||subFormFor===t.id;
+      if(!anyVisible)return "";
+      const ki={total:kids.length,done:kids.filter(k=>k.status==="done").length};
+      return taskRow(t,false,ki)+kids.filter(k=>taskVisible(k)||subFormFor===t.id).map(k=>taskRow(k,true)).join("")+subFormHtml(t);
+    }).join("");
+    return `<div class="phase-sec">
+      <div class="phase-head" onclick="togglePhase(${ph})">
+        <span class="ph ph${ph}">${label}</span>
+        <div class="pmini"><i style="width:${pct}%"></i></div>
+        <span class="tag-dim">${done}/${all.length} готово</span>
+        <span class="tag-dim" style="margin-left:auto">${open?"свернуть ▾":"развернуть ▸"}</span>
+      </div>
+      ${open?(rows||"<div class='hint' style='padding:8px 0 2px'>нет задач под текущим фильтром</div>"):""}
+    </div>`;
+  }).join("");
+  return `<div class="card"><h2>Задачи 30 / 60 / 90 — переменная часть</h2>
+  <div class="hint">От макро-целей до микро-шагов: «+ микро» добавляет подзадачу. Статусы попадают в снапшот недели при сохранении check-in и отображаются на карте пути. «Недоделано» — задача начата, но результат не принят.</div>
+  <div class="fbar">${chips}</div>
+  ${sections}
+  <div class="groupbar"><h3>Новая задача</h3><div class="ln"></div></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <input type="text" id="nt-title" placeholder="Формулировка задачи" style="flex:3;min-width:220px">
+    <select id="nt-phase" style="width:110px"><option value="30">0–30</option><option value="60">31–60</option><option value="90">61–90</option></select>
+    <select id="nt-kind" style="width:130px"><option value="std">Обычная</option><option value="macro">Макро-цель</option></select>
+    <button class="btn btn-p" onclick="addTask()">Добавить</button>
+  </div></div>`;
+}
+function setTaskFilter(k){taskFilter=k;render();}
+function togglePhase(ph){TASK_COLLAPSE[ph]=!TASK_COLLAPSE[ph];render();}
+function openSub(id){subFormFor=id;render();const i=document.getElementById("sub-title");if(i)i.focus();}
+function addSub(id){const i=document.getElementById("sub-title");const v=i?i.value.trim():"";if(!v)return toast("Введите шаг");
+  const e=E();const par=e.tasks.find(t=>t.id===id);
+  e.tasks.push({id:"t"+Date.now(),phase:par.phase,title:v,status:"todo",parentId:id});
+  subFormFor=null;save();render();toast("Микро-шаг добавлен");}
+function setTaskStatus(id,v){const t=E().tasks.find(t=>t.id===id);if(t){t.status=v;save();render();}}
+function addTask(){const ti=document.getElementById("nt-title").value.trim();if(!ti)return toast("Введите формулировку");
+  const kind=document.getElementById("nt-kind").value;
+  const nt={id:"t"+Date.now(),phase:+document.getElementById("nt-phase").value,title:ti,status:"todo"};
+  if(kind==="macro")nt.kind="macro";
+  E().tasks.push(nt);save();render();toast("Задача добавлена");}
+function delTask(id){if(!confirm("Удалить задачу (вместе с её микро-шагами)?"))return;const e=E();e.tasks=e.tasks.filter(t=>t.id!==id&&t.parentId!==id);save();render();}
+
+/* ================= OBSERVATIONS ================= */
+function tplObs(e){
+  const list=[...e.observations].reverse().map(o=>{const [cls,lbl]=OBS_ST[o.status];
+    return `<div class="obs"><div class="head"><span class="badge ${cls}">${lbl}</span><span class="dt">${o.date}</span>
+      <select class="tstat" style="margin-left:auto" onchange="setObsStatus('${o.id}',this.value)">${Object.entries(OBS_ST).map(([k,[,l]])=>`<option value="${k}" ${o.status===k?"selected":""}>${l}</option>`).join("")}</select></div>
+      <div class="txt">${o.text}</div>
+      ${o.comment?`<div class="cmt"><b>Решение / обоснование:</b> ${o.comment}</div>`:""}
+      <div style="display:flex;gap:8px;margin-top:7px"><input type="text" id="oc-${o.id}" placeholder="Чем подтверждено / опровергнуто, что делаем" style="flex:1"><button class="btn btn-g btn-sm" onclick="setObsComment('${o.id}')">OK</button></div></div>`;
+  }).join("")||"<div class='hint'>Наблюдений нет.</div>";
+  return `<div class="card"><h2>Observations Log</h2><div class="hint">Каждое наблюдение проживает цикл: open → confirmed / refuted / action taken — с обоснованием. Ничего не теряется в ноутс.</div>${list}
+  <div class="groupbar"><h3>Новое наблюдение</h3><div class="ln"></div></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="no-text" placeholder="Что замечено" style="flex:3;min-width:240px"><button class="btn btn-p" onclick="addObs()">Зафиксировать</button></div></div>`;
+}
+function setObsStatus(id,v){const o=E().observations.find(o=>o.id===id);if(o){o.status=v;save();render();}}
+function setObsComment(id){const v=document.getElementById("oc-"+id).value.trim();if(!v)return;E().observations.find(o=>o.id===id).comment=v;save();render();}
+function addObs(){const v=document.getElementById("no-text").value.trim();if(!v)return toast("Введите наблюдение");
+  E().observations.push({id:"o"+Date.now(),date:new Date().toISOString().slice(0,10),text:v,status:"open",comment:""});save();render();toast("Наблюдение зафиксировано");}
+
+/* ================= PROFILE ================= */
+function tplProfile(e){
+  const bcls={Critical:"b-crit",Must:"b-must",Good:"b-good"};
+  let pre="";
+  if(e.preAssess){
+    const pa=e.preAssess;
+    pre=`<div class="groupbar"><h3>Результат преданализа от ${pa.date}</h3><div class="ln"></div></div>
+    ${pa.summary?`<div style="font-size:13.5px;margin-bottom:10px">${pa.summary}</div>`:""}
+    <table><tr><th>Скилл</th><th>Оценка по интервью</th><th>Target</th></tr>
+    ${e.skills.map(s=>{const v=pa.ratings&&pa.ratings[s.id];return `<tr><td>${s.name}</td><td><b>${v!=null?v:"н/д"}</b>${v!=null?"/5":""}</td><td class="muted">${TGT[s.g]}/5</td></tr>`;}).join("")}</table>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:12.5px">
+      <span style="color:var(--green)"><b>Сильные:</b> ${(pa.strengths||[]).map(s2=>s2.point||s2).join("; ")||"—"}</span>
+      <span style="color:var(--red)"><b>Риски:</b> ${(pa.risks||[]).map(r=>r.point||r).join("; ")||"—"}</span>
+    </div>`;
+  }
+  return `<div class="card"><h2>Скиллсет роли — статичная часть (Day 0)</h2><div class="hint">Зафиксировано при создании плана. Target: Critical 5 · Must 4 · Good 3</div>
+  <table><tr><th>#</th><th>Скилл</th><th>Importance</th><th>Target</th></tr>${e.skills.map((s,i)=>`<tr><td class="muted">${i+1}</td><td><b>${s.name}</b></td><td><span class="badge ${bcls[s.g]}">${s.g}</span></td><td><b>${TGT[s.g]}</b>/5</td></tr>`).join("")}</table></div>
+  <div class="card"><h2>AI-преданализ интервью</h2>
+  <div class="hint">Вставьте транскрипт звонка с кандидатом → «Скопировать промпт» соберёт задание для Claude со скиллсетом этой роли (анализ максимально критичный, но с фиксацией сильных сторон и цитат-доказательств). Прогоните в Claude, полученный JSON вставьте в импорт — оценка появится здесь, а риски и сильные стороны уйдут в Наблюдения.</div>
+  <textarea id="tr-text" rows="5" placeholder="Транскрипт интервью / звонка с кандидатом..."></textarea>
+  <div class="toolbar" style="margin-top:10px">
+    <button class="btn btn-p" onclick="copyPrompt()">📋 Скопировать промпт анализа</button>
+    <button class="btn btn-g" onclick="const x=document.getElementById('ai-json');x.style.display=x.style.display==='none'?'block':'none'">Импортировать результат (JSON)</button>
+  </div>
+  <div id="ai-json" style="display:none;margin-top:10px">
+    <textarea id="tr-json" rows="4" placeholder='Вставьте JSON-ответ Claude: {"ratings":{"s1":4,...},"strengths":[{"point":"...","quote":"..."}],"risks":[...],"summary":"..."}'></textarea>
+    <div class="savebar" style="position:static"><button class="btn btn-p" onclick="importPre()">Импортировать</button></div>
+  </div>
+  ${pre}</div>
+  <div class="card"><h2>Данные</h2><div class="toolbar">
+    <button class="btn btn-p" onclick="exportEmp()">⬇︎ Экспорт плана (JSON)</button>
+    <button class="btn btn-g" onclick="window.print()">🖨 Печать / PDF</button>
+    <button class="btn btn-g" onclick="clearDemo()" ${e.demo?"":"disabled"}>Очистить демо-оценки</button>
+    <button class="btn btn-g" style="color:var(--red)" onclick="delEmp()">Удалить сотрудника</button></div></div>`;
+}
+function copyPrompt(){
+  const e=E();
+  const tr=document.getElementById("tr-text").value.trim();
+  const sk=e.skills.map((s,i)=>`${i+1}. [${s.id}] ${s.name} — importance: ${s.g}, target ${TGT[s.g]}/5`).join("\n");
+  const att=e.attitude.map(a=>`[${a.id}] ${a.name}`).join("; ");
+  const pot=e.potential.map(p2=>`[${p2.id}] ${p2.name}`).join("; ");
+  const prompt=`Ты — предельно критичный talent-аналитик. Проанализируй транскрипт интервью кандидата на роль «${e.meta.role}».
+
+СКИЛЛСЕТ РОЛИ:
+${sk}
+
+Отношение к работе: ${att}
+Потенциал: ${pot}
+
+ПРАВИЛА АНАЛИЗА:
+1. Будь максимально критичен: общие слова кандидата («умею», «делал») без конкретики — НЕ доказательство. Оценку выставляй только по подтверждённым сигналам: конкретные кейсы, цифры, детали, ход рассуждений.
+2. Если по скиллу данных нет — ставь null, не угадывай.
+3. Каждый риск и каждую сильную сторону подтверди дословной цитатой из транскрипта.
+4. Отдельно отметь, где кандидат уходил от ответа, противоречил себе или преувеличивал.
+5. Сильные стороны фиксируй честно — критичность не означает только негатив.
+
+ФОРМАТ ОТВЕТА — строго JSON без пояснений вокруг:
+{"ratings":{"s1":1-5|null,...},"confidence":{"s1":"low|med|high",...},"strengths":[{"point":"...","quote":"..."}],"risks":[{"point":"...","quote":"..."}],"questions":["что проверить на следующем этапе"],"summary":"3-4 предложения: общий вывод, главный риск, главная сила"}
+
+ТРАНСКРИПТ:
+${tr||"[вставьте транскрипт сюда]"}`;
+  const done=()=>toast("Промпт скопирован — вставьте в Claude");
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(prompt).then(done,()=>{window.prompt("Скопируйте вручную:",prompt);});
+  else window.prompt("Скопируйте вручную:",prompt);
+}
+function importPre(){
+  try{
+    const data=JSON.parse(document.getElementById("tr-json").value);
+    if(!data||typeof data!=="object")throw 0;
+    const e=E();const dt=new Date().toISOString().slice(0,10);
+    e.preAssess={date:dt,ratings:data.ratings||{},strengths:data.strengths||[],risks:data.risks||[],summary:data.summary||""};
+    (data.risks||[]).forEach((r,i)=>e.observations.push({id:"opre"+Date.now()+i,date:dt,text:"⚠ Из интервью: "+(r.point||r),status:"open",comment:r.quote?("Цитата: «"+r.quote+"»"):""}));
+    (data.strengths||[]).forEach((s2,i)=>e.observations.push({id:"oprs"+Date.now()+i,date:dt,text:"✦ Сильная сторона (интервью): "+(s2.point||s2),status:"confirmed",comment:s2.quote?("Цитата: «"+s2.quote+"»"):""}));
+    save();render();toast("Преданализ импортирован: профиль + наблюдения обновлены");
+  }catch(err){toast("Не валидный JSON — вставьте ответ Claude целиком");}
+}
+function exportEmp(){const e=E();const blob=new Blob([JSON.stringify(e,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`30-60-90_${e.meta.name}_${new Date().toISOString().slice(0,10)}.json`;a.click();toast("JSON выгружен");}
+function clearDemo(){const e=E();if(!confirm("Удалить демо-ревью (кроме baseline) и демо-наблюдения?"))return;
+  e.reviews=e.reviews.filter(r=>!r.demo||r.week===0);e.reviews.forEach(r=>delete r.demo);
+  e.observations=e.observations.filter(o=>!o.demo);delete e.demo;save();render();toast("Демо очищено");}
+function delEmp(){const e=E();if(!confirm(`Удалить ${e.meta.name} и весь его план?`))return;
+  HUB.employees=HUB.employees.filter(x=>x.id!==e.id);
+  if(CLOUD())window.sb.from("employees").delete().eq("id",e.id).then(()=>{});
+  save();go("home");toast("Удалено");}
+
+/* ================= NEW EMPLOYEE ================= */
+function openModal(){document.getElementById("modal").classList.add("on");document.getElementById("m-start").value=new Date().toISOString().slice(0,10);}
+function closeModal(){document.getElementById("modal").classList.remove("on");}
+function createEmployee(){
+  const name=document.getElementById("m-name").value.trim();
+  const role=document.getElementById("m-role").value.trim();
+  if(!name||!role)return toast("Заполните имя и роль");
+  const mgr=document.getElementById("m-mgr").value.trim()||"—";
+  const start=document.getElementById("m-start").value||new Date().toISOString().slice(0,10);
+  const skLines=document.getElementById("m-skills").value.split("\n").map(s=>s.trim()).filter(Boolean);
+  const skills=skLines.map((l,i)=>{const [n,g]=l.split("|").map(x=>x.trim());const gg=["Critical","Must","Good"].includes(g)?g:"Must";
+    return {id:"s"+(i+1),g:gg,name:n||("Skill "+(i+1)),short:(n||"").slice(0,16)};});
+  if(!skills.length)return toast("Добавьте хотя бы один скилл");
+  const tkLines=document.getElementById("m-tasks").value.split("\n").map(s=>s.trim()).filter(Boolean);
+  const tasks=tkLines.map((l,i)=>{const [ph,t]=l.split("|").map(x=>x.trim());const p=[30,60,90].includes(+ph)?+ph:30;
+    return {id:"t"+(i+1),phase:p,title:t||l,status:"todo"};});
+  const emp={id:"e"+Date.now(),meta:{name,role,manager:mgr,startDate:start,days:90},skills,
+    attitude:ATT_DEF.map(([id,n])=>({id,name:n})),potential:POT_DEF.map(([id,n])=>({id,name:n})),
+    tasks,reviews:[],observations:[]};
+  HUB.employees.push(emp);save();closeModal();go("emp",emp.id,"checkin");toast("План создан — зафиксируйте baseline (Day 0) в Check-in");
+}
+
+/* ================= HUB IO ================= */
+function exportHub(){const blob=new Blob([JSON.stringify(HUB,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`flowlix-grow-hub_${new Date().toISOString().slice(0,10)}.json`;a.click();toast("Бэкап выгружен");}
+function importHub(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();
+  r.onload=ev=>{try{const data=JSON.parse(ev.target.result);
+    if(data.employees){HUB=data;} else if(data.meta&&data.skills){const ex=HUB.employees.findIndex(e=>e.id===data.id);if(ex>=0)HUB.employees[ex]=data;else HUB.employees.push(data);}
+    else throw 0;
+    save();render();toast("Импортировано ✓");}catch(e){toast("Не валидный JSON");}};
+  r.readAsText(f);}
+
+/* ================= TOOLTIP ================= */
+document.addEventListener("mousemove",ev=>{
+  if(ev.target&&ev.target.id==="journey")return;
+  const t=ev.target.closest&&ev.target.closest("[data-tip]");
+  const tip=document.getElementById("tip");
+  if(t){tip.textContent=t.getAttribute("data-tip");tip.style.opacity=1;tip.style.left=(ev.clientX+14)+"px";tip.style.top=(ev.clientY+10)+"px";}
+  else tip.style.opacity=0;
+});
+
+window.appStart=async function(){
+  if(CLOUD())await loadHub();else HUB=loadLocal();
+  render();
+};
+/* локальный режим без config.js — открываем сразу */
+if(!(window.FLOWLIX_CONFIG&&window.FLOWLIX_CONFIG.SUPABASE_URL)){
+  document.getElementById("app-root").style.display="block";
+  window.appStart();
+}
+</script>
+<script type="module">
+if(window.FLOWLIX_CONFIG&&window.FLOWLIX_CONFIG.SUPABASE_URL){
+  const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");
+  window.sb=createClient(window.FLOWLIX_CONFIG.SUPABASE_URL,window.FLOWLIX_CONFIG.SUPABASE_ANON_KEY);
+  const gate=document.getElementById("auth-gate"),app=document.getElementById("app-root");
+  window.signIn=()=>window.sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin+location.pathname,queryParams:{hd:"flowlix.eu",prompt:"select_account"}}});
+  window.signOutApp=async()=>{await window.sb.auth.signOut();location.reload();};
+  let booted=false;
+  async function boot(){
+    const {data:{session}}=await window.sb.auth.getSession();
+    if(!session){gate.style.display="flex";app.style.display="none";return;}
+    const email=session.user.email||"";
+    if(!email.toLowerCase().endsWith("@flowlix.eu")){
+      await window.sb.auth.signOut();
+      document.getElementById("auth-err").textContent="Доступ только для аккаунтов @flowlix.eu";
+      gate.style.display="flex";app.style.display="none";return;
+    }
+    gate.style.display="none";app.style.display="block";
+    const who=document.getElementById("who");who.style.display="inline";who.textContent=email;
+    document.getElementById("signout").style.display="inline-block";
+    if(!booted){booted=true;await window.appStart();}
+  }
+  window.sb.auth.onAuthStateChange(()=>boot());
+  boot();
+}
+</script>
+</body>
+</html>
