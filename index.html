@@ -1270,22 +1270,22 @@ if(window.FLOWLIX_CONFIG&&window.FLOWLIX_CONFIG.SUPABASE_URL){
   window.signIn=()=>window.sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin+location.pathname,queryParams:{hd:"flowlix.eu",prompt:"select_account"}}});
   window.signOutApp=async()=>{await window.sb.auth.signOut();location.reload();};
   let booted=false;
-  async function boot(){
-    const {data:{session}}=await window.sb.auth.getSession();
+  function applySession(session){
     if(!session){gate.style.display="flex";app.style.display="none";return;}
-    const email=session.user.email||"";
+    const email=(session.user&&session.user.email)||"";
     if(!email.toLowerCase().endsWith("@flowlix.eu")){
-      await window.sb.auth.signOut();
+      window.sb.auth.signOut();
       document.getElementById("auth-err").textContent="Доступ только для аккаунтов @flowlix.eu";
       gate.style.display="flex";app.style.display="none";return;
     }
     gate.style.display="none";app.style.display="block";
     const who=document.getElementById("who");who.style.display="inline";who.textContent=email;
     document.getElementById("signout").style.display="inline-block";
-    if(!booted){booted=true;await window.appStart();}
+    if(!booted){booted=true;window.appStart();}
   }
-  window.sb.auth.onAuthStateChange(()=>boot());
-  boot();
+  /* не вызываем getSession внутри onAuthStateChange — иначе дедлок;
+     INITIAL_SESSION приходит сразу после подписки с текущей сессией */
+  window.sb.auth.onAuthStateChange((ev,session)=>{applySession(session);});
 }
 </script>
 </body>
